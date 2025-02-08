@@ -4,7 +4,16 @@ const credits = "@SudipThapa-Arc";
 const email = "Email";
 const emailhint = "Enter your email";
 const password = "Password";
+const retypepassword = "Retype Password";
+const name = "Name";
+const namehint = "Enter your name";
+
 const passwordhint = "************";
 const login = "Login";
 const signup = "Signup";
 const forgotpassword = "Forgot Password";
+const createaccount = "or, Create Account";
+const loginwith = "Login with";
+const privacyPolicy = "Privacy Policy";
+const termsandconditions = "Terms & Conditions";
+const alreadyhaveaccount = "Already have an account?";
