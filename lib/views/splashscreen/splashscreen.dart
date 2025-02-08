@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/consts/colors.dart';
+import 'package:get/get.dart';
 import 'package:myapp/consts/consts.dart';
+import 'package:myapp/views/auth_screen/login_screen.dart';
 import 'package:myapp/widgets_common/applogowidget.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -11,6 +12,14 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.offAll(() => const Loginscreen());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +37,7 @@ class _SplashscreenState extends State<Splashscreen> {
             appname.text.fontFamily(bold).size(22).white.make(),
             5.heightBox,
             appversion.text.white.make(),
-           const Spacer(),
+            const Spacer(),
             credits.text.white.fontFamily(semibold).make(),
             30.heightBox,
           ],

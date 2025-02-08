@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:myapp/consts/strings.dart';
 import 'package:myapp/consts/styles.dart';
 import 'package:myapp/views/splashscreen/splashscreen.dart';
@@ -13,20 +14,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title:appname,
+    return GetMaterialApp(
+      title: appname,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.transparent,
-        appBarTheme:const AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
-          
         ),
         fontFamily: regular,
-
       ),
       debugShowCheckedModeBanner: false,
-      home:Splashscreen(),
-      
+      home: const Splashscreen(),
     );
   }
 }
