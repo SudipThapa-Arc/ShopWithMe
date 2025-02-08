@@ -1,3 +1,10 @@
 const appname = "ShopWithMe";
 const appversion = "Version 1.0.0";
 const credits = "@SudipThapa-Arc";
+const email = "Email";
+const emailhint = "Enter your email";
+const password = "Password";
+const passwordhint = "************";
+const login = "Login";
+const signup = "Signup";
+const forgotpassword = "Forgot Password";
