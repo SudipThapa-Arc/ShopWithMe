@@ -28,6 +28,13 @@ const logout = "Logout";
 const helpandsupport = "Help & Support";
 const about = "About";
 const contactus = "Contact Us";
+const searchhint = "Search for products, categories...";
+const searchproduct = "Search Product";
+const topbrand = "Top Brands";
+const featuredproduct = "Featured Product";
+const featuredcategories = "Featured Categories";
+const featuredbrands = "Featured Brands";
+const featuredproducts = "Featured Products";
 
 const faq = "FAQ";
 const feedback = "Feedback";
