@@ -9,6 +9,7 @@ import 'package:myapp/common_widgets/bgwidget.dart';
 import 'package:myapp/common_widgets/text_fields.dart';
 
 import '../../common_widgets/common_button.dart';
+import '../home_screen/home.dart';
 
 class Loginscreen extends StatelessWidget {
   const Loginscreen({super.key});
@@ -90,7 +91,7 @@ class Loginscreen extends StatelessWidget {
                       textColor: whiteColor,
                       color: redColor,
                       onPress: () {
-                        Get.to(() => Signupscreen());
+                        Get.to(() => Home());
                       }).box.width(context.screenWidth - 50).make(),
                   10.heightBox,
                   createaccount.text.color(fontGrey).make(),

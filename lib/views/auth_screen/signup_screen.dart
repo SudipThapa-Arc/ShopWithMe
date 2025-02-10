@@ -8,12 +8,18 @@ import 'package:myapp/common_widgets/text_fields.dart';
 import 'package:myapp/common_widgets/bgwidget.dart';
 // import 'package:velocity_x/velocity_x.dart';
 
-class Signupscreen extends StatelessWidget {
+class Signupscreen extends StatefulWidget {
   const Signupscreen({super.key});
 
   @override
+  State<Signupscreen> createState() => _SignupscreenState();
+}
+
+class _SignupscreenState extends State<Signupscreen> {
+  bool ischeck = false;
+  @override
   Widget build(BuildContext context) {
-    var controller = Get.put(AuthController());
+    Get.put(AuthController());
 
     return bgWidget(
         child: Scaffold(
@@ -40,29 +46,28 @@ class Signupscreen extends StatelessWidget {
                   ),
                   customtextfield(
                     hint: passwordhint,
+                    title: password,
+                  ),
+                  customtextfield(
+                    hint: passwordhint,
                     title: retypepassword,
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () {},
-                          child: forgotpassword.text.color(redColor).make())),
                   Row(
                     children: [
-                      Obx(
-                        () => Checkbox(
-                          activeColor: redColor,
-                          checkColor: whiteColor,
-                          value: controller.isCheck.value,
-                          onChanged: (newValue) {
-                            controller.toggleCheckbox();
-                          },
-                        ),
+                      Checkbox(
+                        activeColor: redColor,
+                        checkColor: whiteColor,
+                        value: ischeck,
+                        onChanged: (newValue) {
+                          setState(() {
+                            ischeck = newValue!;
+                          });
+                        },
                       ),
                       5.widthBox,
                       Expanded(
                           child: RichText(
-                              text: TextSpan(children: [
+                              text: const TextSpan(children: [
                         TextSpan(
                             text: "I agree to the ",
                             style: TextStyle(
@@ -76,11 +81,11 @@ class Signupscreen extends StatelessWidget {
                   ),
                   5.heightBox,
                   custombutton(
-                      color: controller.isCheck.value ? redColor : lightGrey,
+                      color: ischeck == true ? redColor : lightGrey,
                       title: signup,
                       textColor: whiteColor,
                       onPress: () {
-                        if (controller.isCheck.value != true) {
+                        if (ischeck != true) {
                           VxToast.show(context,
                               msg: "Please agree to Terms & Conditions");
                         } else {
@@ -89,7 +94,7 @@ class Signupscreen extends StatelessWidget {
                       }).box.width(context.screenWidth - 50).make(),
                   10.heightBox,
                   RichText(
-                      text: TextSpan(children: [
+                      text: const TextSpan(children: [
                     TextSpan(
                         text: alreadyhaveaccount,
                         style: TextStyle(fontFamily: bold, color: fontGrey)),
