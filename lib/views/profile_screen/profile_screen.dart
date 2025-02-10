@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
+      color: Colors.red,
       child: Column(
         children: [
-          Text("Home"),
+          Text("Profile"),
         ],
       ),
     );

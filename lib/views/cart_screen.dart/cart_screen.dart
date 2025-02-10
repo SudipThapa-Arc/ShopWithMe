@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
+      color: Colors.purple,
       child: Column(
         children: [
-          Text("Home"),
+          Text("Cart"),
         ],
       ),
     );
