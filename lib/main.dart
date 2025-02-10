@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/consts/strings.dart';
-import 'package:myapp/consts/styles.dart';
+import 'package:myapp/constants/strings.dart';
+import 'package:myapp/constants/styles.dart';
 import 'package:myapp/views/splashscreen/splashscreen.dart';
 
 void main() {

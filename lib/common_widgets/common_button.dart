@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/consts/consts.dart';
+import 'package:myapp/constants/consts.dart';
 
 Widget custombutton({onPress, color, textColor, String? title}) {
   return ElevatedButton(

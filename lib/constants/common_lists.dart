@@ -1,4 +1,4 @@
-import 'package:myapp/consts/images.dart';
+import 'package:myapp/constants/images.dart';
 
 const socialIconList = [
   icGoogleLogo,

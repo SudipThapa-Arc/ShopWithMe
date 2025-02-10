@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/consts/consts.dart';
+import 'package:myapp/constants/consts.dart';
 import 'package:myapp/controllers/auth_controller.dart';
 import 'package:myapp/common_widgets/applogowidget.dart';
 import 'package:myapp/common_widgets/common_button.dart';

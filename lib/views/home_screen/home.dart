@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/consts/colors.dart';
-import 'package:myapp/consts/images.dart';
-import 'package:myapp/consts/strings.dart';
+import 'package:myapp/constants/colors.dart';
+import 'package:myapp/constants/images.dart';
+import 'package:myapp/constants/strings.dart';
 import 'package:myapp/views/cart_screen.dart/cart_screen.dart';
 import 'package:myapp/views/category_screen/category_screen.dart';
 import 'package:myapp/views/home_screen/home_screen.dart';
 
-import '../../consts/styles.dart';
+import '../../constants/styles.dart';
 import '../../controllers/home_controller.dart';
 import '../profile_screen/profile_screen.dart';
 

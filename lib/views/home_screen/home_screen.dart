@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/consts/consts.dart';
-import 'package:myapp/consts/common_lists.dart';
+import 'package:myapp/constants/consts.dart';
+import 'package:myapp/constants/common_lists.dart';
 
 import '../../common_widgets/home_buttons.dart';
 
