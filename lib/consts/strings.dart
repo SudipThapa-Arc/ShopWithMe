@@ -35,14 +35,14 @@ const featuredproduct = "Featured Product";
 const featuredcategories = "Featured Categories";
 const featuredbrands = "Featured Brands";
 const featuredproducts = "Featured Products";
-const todaydeal = "Today's Deal";
+const todaysdeal = "Today's Deal";
 const flashsale = "Flash Sale";
 const topcategories = "Top Categories";
 const topbrands = "Top Brands";
 const topproducts = "Top Products";
 const newarrivals = "New Arrivals";
 const bestseller = "Best Seller";
-
+const topSeller = "Top Seller";
 const faq = "FAQ";
 const feedback = "Feedback";
 const rateus = "Rate Us";

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/consts/consts.dart';
-import 'package:myapp/consts/social_icons.dart';
+import 'package:myapp/consts/common_lists.dart';
 import 'package:myapp/views/auth_screen/signup_screen.dart';
 import 'package:myapp/controllers/auth_controller.dart';
 import 'package:myapp/common_widgets/applogowidget.dart';

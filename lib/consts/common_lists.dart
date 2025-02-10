@@ -12,3 +12,9 @@ const brandList = [
   imgSlider3,
   imgSlider4,
 ];
+const secondList = [
+  imgSs1,
+  imgSs2,
+  imgSs3,
+  imgSs4,
+];
