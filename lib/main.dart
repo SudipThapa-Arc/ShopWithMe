@@ -4,6 +4,8 @@ import 'package:myapp/constants/strings.dart';
 import 'package:myapp/constants/styles.dart';
 import 'package:myapp/views/splashscreen/splashscreen.dart';
 
+import 'constants/colors.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.transparent,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: darkFontGrey),
         ),
         fontFamily: regular,
       ),

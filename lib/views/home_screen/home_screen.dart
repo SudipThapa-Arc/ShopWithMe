@@ -243,7 +243,7 @@ class HomeScreen extends StatelessWidget {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(imgP5, width: 150, height: 150),
+                            Image.asset(imgP3, width: 150, height: 150),
                             Spacer(),
                             "Laptop 16/256GB"
                                 .text
