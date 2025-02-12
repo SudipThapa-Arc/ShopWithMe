@@ -42,3 +42,27 @@ const featuredTitles2 = [
   boysToys,
   tShirts,
 ];
+
+const categoryList = [
+  womenClothing,
+  menClothing,
+  kidsClothing,
+  electronics,
+  homeAndGarden,
+  beauty,
+  sports,
+  cars,
+  furniture,
+];
+const categoryListImages = [
+  imgFc1,
+  imgFc2,
+  imgFc3,
+  imgFc4,
+  imgFc5,
+  imgFc6,
+  imgFc7,
+  imgFc8,
+  imgFc9,
+  imgFc10,
+];

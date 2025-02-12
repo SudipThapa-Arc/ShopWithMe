@@ -53,3 +53,18 @@ const boysToys = "Boys Toys";
 const tShirts = "T-Shirts";
 const girlsDresses = "Girls Dresses";
 const featuredProducts = "Featured Products";
+
+//category
+const womenClothing = "Women Clothing";
+const menClothing = "Men Clothing";
+const kidsClothing = "Kids Clothing";
+const electronics = "Electronics";
+const homeAndGarden = "Home & Garden";
+const beauty = "Beauty";
+const sports = "Sports";
+const cars = "Cars";
+const furniture = "Furniture";
+const jewelry = "Jewelry";
+const watches = "Watches";
+const bags = "Bags";
+const shoes = "Shoes";
