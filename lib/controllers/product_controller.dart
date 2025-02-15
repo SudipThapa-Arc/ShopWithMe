@@ -20,7 +20,7 @@ class ProductController extends GetxController {
         title: "Summer Floral Dress",
         price: 49.99,
         image:
-            "https://i.pinimg.com/564x/7e/07/e8/7e07e8d24a3c8da0d8dd027ab4c8d805.jpg",
+            "https://imgs.search.brave.com/TNYS0wybINaMF9Z-5ZRRvwyc9ZWpDyogq1Z2B64a43Q/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2M5Lzk0/LzNiL2M5OTQzYjdi/YzM2MTFjNjg0ZDRi/ZWU2N2UyNDgxMjU5/LmpwZw",
         category: "Women Clothing",
         colors: ["Red", "Blue", "Green"],
         description: "Beautiful floral summer dress perfect for any occasion",
