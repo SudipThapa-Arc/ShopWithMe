@@ -35,7 +35,7 @@ class Home extends StatelessWidget {
             icCart,
             width: 26,
           ),
-          label: categories),
+          label: cart),
       BottomNavigationBarItem(
           icon: Image.asset(
             icProfile,
@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
     ];
 
     var navBody = [
-      const HomeScreen(),
+      HomeScreen(),
       const CategoryScreen(),
       const CartScreen(),
       const ProfileScreen(),

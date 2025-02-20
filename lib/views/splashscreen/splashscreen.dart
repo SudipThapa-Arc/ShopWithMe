@@ -1,11 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/consts.dart';
-import 'package:myapp/views/auth_screen/login_screen.dart';
-import 'package:myapp/common_widgets/applogowidget.dart';
-
+import 'package:myapp/views/auth/login_screen.dart';
+import 'package:myapp/views/home_screen/home_screen.dart';
 class Splashscreen extends StatefulWidget {
-  const Splashscreen({super.key});
+  const Splashscreen({Key? key}) : super(key: key);
 
   @override
   State<Splashscreen> createState() => _SplashscreenState();
@@ -15,33 +14,22 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.offAll(() => const Loginscreen());
+    Future.delayed(const Duration(seconds: 2), () {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if (user == null) {
+          Get.off(() => LoginScreen());
+        } else {
+          Get.off(() => const HomeScreen());
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: redColor,
+    return const Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Image.asset(icSplashBg, width: 300),
-            ),
-            20.heightBox,
-            applogowidget(),
-            10.heightBox,
-            appname.text.fontFamily(bold).size(22).white.make(),
-            5.heightBox,
-            appversion.text.white.make(),
-            const Spacer(),
-            credits.text.white.fontFamily(semibold).make(),
-            30.heightBox,
-          ],
-        ),
+        child: CircularProgressIndicator(),
       ),
     );
   }
