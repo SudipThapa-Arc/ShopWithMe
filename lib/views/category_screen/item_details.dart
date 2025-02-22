@@ -11,7 +11,7 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
+    Get.find<ProductController>();
 
     return Scaffold(
       backgroundColor: lightGrey,
@@ -185,7 +185,7 @@ class ItemDetails extends StatelessWidget {
                       children: List.generate(
                         5,
                         (index) => ListTile(
-                          title: "${itemDetailButtonsList[index]}"
+                          title: itemDetailButtonsList[index]
                               .text
                               .fontFamily(semibold)
                               .color(darkFontGrey)

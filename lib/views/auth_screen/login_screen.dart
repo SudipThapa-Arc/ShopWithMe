@@ -17,6 +17,10 @@ class Loginscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
+    
+    // Add TextEditingControllers
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
 
     return bgWidget(
         child: Scaffold(
@@ -36,11 +40,15 @@ class Loginscreen extends StatelessWidget {
                   customtextfield(
                     hint: emailhint,
                     title: email,
+                    controller: emailController,
+                    isPass: false,
                   ),
                   5.heightBox,
                   customtextfield(
                     hint: passwordhint,
                     title: password,
+                    controller: passwordController,
+                    isPass: true,
                   ),
                   Align(
                       alignment: Alignment.centerRight,
@@ -90,8 +98,25 @@ class Loginscreen extends StatelessWidget {
                       title: login,
                       textColor: whiteColor,
                       color: redColor,
-                      onPress: () {
-                        Get.to(() => Home());
+                      onPress: () async {
+                        if (controller.isCheck.value) {
+                          controller.isLoading(true);
+                          await controller.login(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                          ).then((value) {
+                            if (value != null) {
+                              // ignore: use_build_context_synchronously
+                              VxToast.show(context, msg: "Logged in successfully");
+                              Get.offAll(() => const Home());
+                            }
+                          });
+                          controller.isLoading(false);
+                        } else {
+                          VxToast.show(context, 
+                            msg: "Please agree to terms & conditions"
+                          );
+                        }
                       }).box.width(context.screenWidth - 50).make(),
                   10.heightBox,
                   createaccount.text.color(fontGrey).make(),

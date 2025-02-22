@@ -4,7 +4,7 @@ import 'package:myapp/constants/consts.dart';
 Widget customtextfield({
   String? title,
   String? hint,
-  controller,
+  controller, required bool isPass,
 }) {
   return Column(
     children: [

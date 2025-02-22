@@ -66,3 +66,25 @@ const categoryListImages = [
   imgFc9,
   imgFc10,
 ];
+
+const categoryImages = [
+  imgS1,
+  imgS2,
+  imgS3,
+  imgFc1,
+  imgFc2,
+  imgFc3,
+  imgS4,
+  imgS5,
+];
+
+const categoryNames = [
+  "Men",
+  "Women",
+  "Kids",
+  "Electronics",
+  "Accessories",
+  "Home",
+  "Beauty",
+  "Sports",
+];
