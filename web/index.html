@@ -109,5 +109,22 @@
       });
     });
   </script>
+
+  <!-- Firebase Configuration -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+    
+    const firebaseConfig = {
+      apiKey: "your-api-key",
+      authDomain: "shopwithme-b4572.firebaseapp.com",
+      projectId: "shopwithme-b4572",
+      storageBucket: "shopwithme-b4572.appspot.com",
+      messagingSenderId: "100092603832",
+      appId: "1:100092603832:web:48e3b69184d4cf10e8734d"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
 </body>
 </html>
