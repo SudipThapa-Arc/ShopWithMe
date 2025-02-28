@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/constants/consts.dart';
+import 'package:shopwithme/constants/consts.dart';
 
 Widget bgWidget({Widget? child}) {
   return Container(

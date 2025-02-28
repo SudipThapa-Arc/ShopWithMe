@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/colors.dart';
-import 'package:myapp/constants/strings.dart';
-import 'package:myapp/views/auth_screen/login_screen.dart';
-import 'package:myapp/views/home_screen/home.dart';
+import 'package:shopwithme/constants/colors.dart';
+import 'package:shopwithme/constants/strings.dart';
+import 'package:shopwithme/views/auth_screen/login_screen.dart';
+import 'package:shopwithme/views/home_screen/home.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});

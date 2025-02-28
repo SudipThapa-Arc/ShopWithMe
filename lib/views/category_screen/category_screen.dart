@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/consts.dart';
-import 'package:myapp/views/category_screen/category_details.dart';
-import 'package:myapp/controllers/product_controller.dart';
+import 'package:shopwithme/constants/consts.dart';
+import 'package:shopwithme/views/category_screen/category_details.dart';
+import 'package:shopwithme/controllers/product_controller.dart';
 import '../../constants/common_lists.dart';
 import 'dart:math';
 

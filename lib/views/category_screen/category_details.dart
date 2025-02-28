@@ -1,12 +1,12 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/colors.dart';
-import 'package:myapp/constants/common_lists.dart';
-import 'package:myapp/constants/styles.dart';
-import 'package:myapp/views/category_screen/item_details.dart';
+import 'package:shopwithme/constants/colors.dart';
+import 'package:shopwithme/constants/common_lists.dart';
+import 'package:shopwithme/constants/styles.dart';
+import 'package:shopwithme/views/category_screen/item_details.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:myapp/controllers/product_controller.dart';
+import 'package:shopwithme/controllers/product_controller.dart';
 
 class CategoryDetails extends StatelessWidget {
   final String title;

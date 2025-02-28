@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/constants/consts.dart';
+import 'package:shopwithme/constants/consts.dart';
 
 Widget featuredButton({String? title, image}) {
   return Row(

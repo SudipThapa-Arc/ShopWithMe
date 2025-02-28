@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/consts.dart';
-import 'package:myapp/controllers/auth_controller.dart';
-import 'package:myapp/common_widgets/applogowidget.dart';
-import 'package:myapp/common_widgets/common_button.dart';
-import 'package:myapp/common_widgets/bgwidget.dart';
+import 'package:shopwithme/constants/consts.dart';
+import 'package:shopwithme/controllers/auth_controller.dart';
+import 'package:shopwithme/common_widgets/applogowidget.dart';
+import 'package:shopwithme/common_widgets/common_button.dart';
+import 'package:shopwithme/common_widgets/bgwidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:velocity_x/velocity_x.dart';
 
 class Signupscreen extends StatefulWidget {
@@ -49,6 +50,7 @@ class _SignupscreenState extends State<Signupscreen> {
   Widget build(BuildContext context) {
     return bgWidget(
         child: Scaffold(
+      backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Center(
@@ -165,6 +167,9 @@ class _SignupscreenState extends State<Signupscreen> {
                                 );
                                 VxToast.show(context, msg: "Account created successfully");
                                 Get.back();
+                                if (FirebaseAuth.instance.currentUser != null) {
+                                  print("Your UID: ${FirebaseAuth.instance.currentUser!.uid}");
+                                }
                               }
                             });
                           } catch (e) {

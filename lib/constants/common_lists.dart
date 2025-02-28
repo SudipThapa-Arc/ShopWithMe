@@ -1,5 +1,5 @@
-import 'package:myapp/constants/images.dart';
-import 'package:myapp/constants/strings.dart';
+import 'package:shopwithme/constants/images.dart';
+import 'package:shopwithme/constants/strings.dart';
 
 const socialIconList = [
   icGoogleLogo,

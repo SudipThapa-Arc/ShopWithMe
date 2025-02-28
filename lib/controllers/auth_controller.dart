@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/firebase_consts.dart';
-import 'package:myapp/views/home_screen/home.dart';
-import 'package:myapp/views/auth_screen/login_screen.dart';
+import 'package:shopwithme/constants/firebase_consts.dart';
+import 'package:shopwithme/views/home_screen/home.dart';
+import 'package:shopwithme/views/auth_screen/login_screen.dart';
+import 'package:shopwithme/models/user_model.dart';
+import 'package:shopwithme/services/user_service.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -13,6 +16,7 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserService _userService = UserService();
 
   @override
   void onReady() {
@@ -217,6 +221,85 @@ class AuthController extends GetxController {
       Get.offAll(() => const Loginscreen());
     } catch (e) {
       print("Error during force logout: $e");
+    }
+  }
+
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
+    try {
+      // Create auth user
+      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        // Create user model
+        final UserModel newUser = UserModel(
+          id: userCredential.user!.uid,
+          name: name,
+          email: email,
+        );
+
+        // Save user data to Firestore
+        await _userService.createUser(newUser);
+
+        Get.snackbar(
+          'Success',
+          'Account created successfully',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      rethrow;
+    }
+  }
+
+  // Add method to get current user data
+  Future<UserModel?> getCurrentUser() async {
+    try {
+      final User? user = _auth.currentUser;
+      if (user != null) {
+        final userData = await _userService.getUser(user.uid);
+        if (userData == null) {
+          print('No user data found for uid: ${user.uid}');
+        }
+        return userData;
+      }
+      print('No authenticated user found');
+      return null;
+    } catch (e) {
+      print('Error in getCurrentUser: $e');
+      return null;
+    }
+  }
+
+  Future<void> refreshUserData() async {
+    try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+        
+        if (userDoc.exists) {
+          // Update any local state if needed
+          update(); // This will notify GetX listeners
+        }
+      }
+    } catch (e) {
+      print('Error refreshing user data: $e');
     }
   }
 }

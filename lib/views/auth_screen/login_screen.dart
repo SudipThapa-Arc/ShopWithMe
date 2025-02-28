@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/consts.dart';
-import 'package:myapp/constants/common_lists.dart';
-import 'package:myapp/views/auth_screen/signup_screen.dart';
-import 'package:myapp/controllers/auth_controller.dart';
-import 'package:myapp/common_widgets/applogowidget.dart';
-import 'package:myapp/common_widgets/bgwidget.dart';
-import 'package:myapp/common_widgets/text_fields.dart';
+import 'package:shopwithme/constants/consts.dart';
+import 'package:shopwithme/constants/common_lists.dart';
+import 'package:shopwithme/views/auth_screen/signup_screen.dart';
+import 'package:shopwithme/controllers/auth_controller.dart';
+import 'package:shopwithme/common_widgets/applogowidget.dart';
+import 'package:shopwithme/common_widgets/bgwidget.dart';
+import 'package:shopwithme/common_widgets/text_fields.dart';
 
 import '../../common_widgets/common_button.dart';
 import '../home_screen/home.dart';
@@ -24,6 +24,7 @@ class Loginscreen extends StatelessWidget {
 
     return bgWidget(
         child: Scaffold(
+      backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Center(

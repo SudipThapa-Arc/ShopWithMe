@@ -1,17 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/views/splashscreen/splashscreen.dart';
-import 'package:myapp/controllers/auth_controller.dart';
+import 'package:shopwithme/views/splashscreen/splashscreen.dart';
+import 'package:shopwithme/controllers/auth_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+  await Firebase.initializeApp( 
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // ignore: unused_local_variable
-  final authController = Get.put(AuthController());
+  
+  Get.put(AuthController());
   
   // Uncomment this line to force logout for testing
   // await authController.forceLogout();

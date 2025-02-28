@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/constants/consts.dart';
-import 'package:myapp/constants/common_lists.dart';
+import 'package:shopwithme/constants/consts.dart';
+import 'package:shopwithme/constants/common_lists.dart';
 
 
 class HomeScreen extends StatelessWidget {

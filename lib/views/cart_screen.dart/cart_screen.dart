@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/constants/colors.dart';
-import 'package:myapp/constants/styles.dart';
+import 'package:shopwithme/constants/colors.dart';
+import 'package:shopwithme/constants/styles.dart';
 import 'dart:math';
 
 class CartScreen extends StatelessWidget {

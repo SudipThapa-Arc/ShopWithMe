@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/images.dart';
-import 'package:myapp/models/product_model.dart';
+import 'package:shopwithme/constants/images.dart';
+import 'package:shopwithme/models/product_model.dart';
 
 class ProductController extends GetxController {
   var quantity = 1.obs;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/constants/colors.dart';
-import 'package:myapp/constants/images.dart';
-import 'package:myapp/constants/strings.dart';
-import 'package:myapp/views/cart_screen.dart/cart_screen.dart';
-import 'package:myapp/views/category_screen/category_screen.dart';
-import 'package:myapp/views/home_screen/home_screen.dart';
+import 'package:shopwithme/constants/colors.dart';
+import 'package:shopwithme/constants/images.dart';
+import 'package:shopwithme/constants/strings.dart';
+import 'package:shopwithme/views/cart_screen.dart/cart_screen.dart';
+import 'package:shopwithme/views/category_screen/category_screen.dart';
+import 'package:shopwithme/views/home_screen/home_screen.dart';
 
 import '../../constants/styles.dart';
 import '../../controllers/home_controller.dart';
@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
       HomeScreen(),
       const CategoryScreen(),
       const CartScreen(),
-      const ProfileScreen(),
+      ProfileScreen(),
     ];
 
     return Scaffold(
