@@ -49,7 +49,7 @@ class CategoryScreen extends StatelessWidget {
                           'Find everything you need',
                           style: TextStyle(
                             fontSize: min(screenSize.width * 0.03, 20),
-                            color: darkFontGrey.withOpacity(0.7),
+                            color: darkFontGrey.withAlpha(178), // 0.7 opacity
                           ),
                         ),
                         SizedBox(height: min(screenSize.width * 0.02, 20)),
@@ -62,12 +62,12 @@ class CategoryScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                                  color: Colors.grey.withAlpha(25), // 0.1 opacity
                                   blurRadius: 10,
                                   offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+                                ),
+                              ],
+                            ),
                             child: TextField(
                               controller: searchController,
                               decoration: InputDecoration(
@@ -116,15 +116,15 @@ class CategoryScreen extends StatelessWidget {
                         horizontal: min(screenSize.width * 0.02, 20),
                       ),
                       itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Container(
+                      itemBuilder: (context, index) {
+                        return Container(
                           width: min(screenSize.width * 0.3, 200),
                           margin: EdgeInsets.only(
                             right: min(screenSize.width * 0.02, 20),
                           ),
                           decoration: BoxDecoration(
                             color: Colors.primaries[index % Colors.primaries.length]
-                                .withOpacity(0.2),
+                                .withAlpha(51), // 0.2 opacity
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -189,42 +189,42 @@ class CategoryScreen extends StatelessWidget {
                             );
                           },
                           child: Container(
-                    decoration: BoxDecoration(
-                      color: whiteColor,
+                            decoration: BoxDecoration(
+                              color: whiteColor,
                               borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withAlpha(25), // 0.1 opacity
                                   blurRadius: 10,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Expanded(
                                   flex: 3,
                                   child: Container(
-                          decoration: BoxDecoration(
+                                    decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.vertical(
                                         top: Radius.circular(15),
-                            ),
-                            image: DecorationImage(
-                              image: AssetImage(categoryListImages[index]),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                                      ),
+                                      image: DecorationImage(
+                                        image: AssetImage(categoryListImages[index]),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                                      children: [
                                         Text(
                                           categoryList[index],
                                           style: TextStyle(
@@ -240,19 +240,19 @@ class CategoryScreen extends StatelessWidget {
                                           '${controller.categoryProducts[categoryList[index]]?.length ?? 0} Products',
                                           style: TextStyle(
                                             fontSize: min(screenSize.width * 0.02, 14),
-                                            color: darkFontGrey.withOpacity(0.7),
+                                            color: darkFontGrey.withAlpha(178), // 0.7 opacity
                                           ),
                                         ),
                                       ],
                                     ),
-                          ),
-                        ),
-                      ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         );
                       },
-                      childCount: 9,
+                      childCount: 8,
                     ),
                   ),
                 ),

@@ -33,26 +33,37 @@ class AuthController extends GetxController {
   }
 
   Future<UserCredential?> login(String email, String password) async {
-    if (email.isEmpty || password.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Please fill all fields",
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return null;
-    }
-
-    if (!isEmailValid(email)) {
-      Get.snackbar(
-        "Error",
-        "Please enter a valid email address",
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return null;
-    }
-    
     try {
+      // First validate inputs before attempting login
+      if (email.isEmpty || password.isEmpty) {
+        Get.snackbar(
+          "Error",
+          "Please fill all fields",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withAlpha(178),
+          colorText: Colors.white,
+          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          borderRadius: 10,
+        );
+        return null;
+      }
+
+      if (!isEmailValid(email)) {
+        Get.snackbar(
+          "Error",
+          "Please enter a valid email address",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withAlpha(178),
+          colorText: Colors.white,
+          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          borderRadius: 10,
+        );
+        return null;
+      }
+      
       isLoading(true);
+      
+      // Attempt to sign in
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim()
@@ -67,46 +78,66 @@ class AuthController extends GetxController {
       if (!userData.exists) {
         Get.snackbar(
           "Error",
-          "User data not found",
+          "User data not found in database",
           snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withAlpha(178),
+          colorText: Colors.white,
+          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          borderRadius: 10,
         );
         await _auth.signOut();
-        isLoading(false);
         return null;
       }
       
-      isLoading(false);
+      // Login successful - just return the credential
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      isLoading(false);
+      // Handle specific Firebase Auth errors
       String errorMessage;
       switch (e.code) {
         case 'user-not-found':
           errorMessage = 'No user found with this email';
           break;
         case 'wrong-password':
-          errorMessage = 'Wrong password';
+          errorMessage = 'Incorrect password';
           break;
         case 'invalid-email':
-          errorMessage = 'Invalid email address';
+          errorMessage = 'Invalid email format';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This account has been disabled';
+          break;
+        case 'too-many-requests':
+          errorMessage = 'Too many login attempts. Try again later';
           break;
         default:
-          errorMessage = e.message ?? 'An error occurred';
+          errorMessage = e.message ?? 'Authentication failed';
       }
+      
       Get.snackbar(
-        "Error",
+        "Login Failed",
         errorMessage,
         snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withAlpha(178),
+        colorText: Colors.white,
+        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        borderRadius: 10,
       );
       return null;
     } catch (e) {
-      isLoading(false);
+      // Handle other unexpected errors
       Get.snackbar(
         "Error",
-        e.toString(),
+        "An unexpected error occurred: ${e.toString()}",
         snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withAlpha(178),
+        colorText: Colors.white,
+        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        borderRadius: 10,
       );
       return null;
+    } finally {
+      isLoading(false);
     }
   }
 
@@ -117,6 +148,10 @@ class AuthController extends GetxController {
                 "Error",
                 "Please fill all fields",
                 snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.red.withAlpha(178),
+                colorText: Colors.white,
+                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                borderRadius: 10,
             );
             return null;
         }
@@ -126,6 +161,10 @@ class AuthController extends GetxController {
                 "Error",
                 "Please enter a valid email address",
                 snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.red.withAlpha(178),
+                colorText: Colors.white,
+                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                borderRadius: 10,
             );
             return null;
         }
@@ -135,6 +174,10 @@ class AuthController extends GetxController {
                 "Error",
                 "Password must be at least 6 characters",
                 snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.red.withAlpha(178),
+                colorText: Colors.white,
+                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                borderRadius: 10,
             );
             return null;
         }
@@ -164,6 +207,10 @@ class AuthController extends GetxController {
             "Error",
             errorMessage,
             snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withAlpha(178),
+            colorText: Colors.white,
+            margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            borderRadius: 10,
         );
         return null;
     } catch (e) {
@@ -171,6 +218,10 @@ class AuthController extends GetxController {
             "Error",
             e.toString(),
             snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withAlpha(178),
+            colorText: Colors.white,
+            margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+            borderRadius: 10,
         );
         return null;
     } finally {
@@ -207,6 +258,10 @@ class AuthController extends GetxController {
         "Error",
         e.toString(),
         snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withAlpha(178),
+        colorText: Colors.white,
+        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        borderRadius: 10,
       );
     }
   }
@@ -220,7 +275,7 @@ class AuthController extends GetxController {
       await _auth.signOut();
       Get.offAll(() => const Loginscreen());
     } catch (e) {
-      print("Error during force logout: $e");
+      debugPrint("Error during force logout: $e");
     }
   }
 
@@ -250,16 +305,20 @@ class AuthController extends GetxController {
         Get.snackbar(
           'Success',
           'Account created successfully',
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.green.withAlpha(178),
           colorText: Colors.white,
+          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+          borderRadius: 10,
         );
       }
     } catch (e) {
       Get.snackbar(
         'Error',
         e.toString(),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.red.withAlpha(178),
         colorText: Colors.white,
+        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+        borderRadius: 10,
       );
       rethrow;
     }
@@ -272,14 +331,14 @@ class AuthController extends GetxController {
       if (user != null) {
         final userData = await _userService.getUser(user.uid);
         if (userData == null) {
-          print('No user data found for uid: ${user.uid}');
+          debugPrint('No user data found for uid: ${user.uid}');
         }
         return userData;
       }
-      print('No authenticated user found');
+      debugPrint('No authenticated user found');
       return null;
     } catch (e) {
-      print('Error in getCurrentUser: $e');
+      debugPrint('Error in getCurrentUser: $e');
       return null;
     }
   }
@@ -299,7 +358,7 @@ class AuthController extends GetxController {
         }
       }
     } catch (e) {
-      print('Error refreshing user data: $e');
+      debugPrint('Error refreshing user data: $e');
     }
   }
 }

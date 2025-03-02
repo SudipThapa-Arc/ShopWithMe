@@ -6,6 +6,8 @@ class Product {
   final List<String> colors;
   final String description;
   final bool isNetworkImage;
+  final double? rating;
+  final List<String>? sizes;
 
   Product({
     required this.title,
@@ -15,5 +17,7 @@ class Product {
     required this.colors,
     required this.description,
     this.isNetworkImage = true,
+    this.rating = 4.5,
+    this.sizes,
   });
 }

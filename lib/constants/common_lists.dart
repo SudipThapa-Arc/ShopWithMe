@@ -48,7 +48,6 @@ const categoryList = [
   menClothing,
   kidsClothing,
   electronics,
-  homeAndGarden,
   beauty,
   sports,
   cars,

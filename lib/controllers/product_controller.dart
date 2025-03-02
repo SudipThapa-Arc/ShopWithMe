@@ -13,6 +13,10 @@ class ProductController extends GetxController {
   var favorites = <int>[].obs;
   var currentProduct = Rx<Product?>(null);
   var currentCategory = ''.obs;
+  final RxList relatedProducts = <Product>[].obs;
+  var sizeIndex = 0.obs;
+  final RxList<Product> cartItems = <Product>[].obs;
+  final RxDouble cartTotal = 0.0.obs;
 
   final Map<String, List<Product>> categoryProducts = {
     'Women Clothing': [
@@ -24,6 +28,7 @@ class ProductController extends GetxController {
         category: "Women Clothing",
         colors: ["Red", "Blue", "Green"],
         description: "Beautiful floral summer dress perfect for any occasion",
+        sizes: ["XS", "S", "M", "L", "XL"],
       ),
       Product(
         title: "Evening Gown",
@@ -803,9 +808,21 @@ class ProductController extends GetxController {
   }) {
     currentProductTitle.value = title;
     currentProductPrice.value = price;
+    
+    // Find and set the actual product object
+    for (var category in categoryProducts.keys) {
+      for (var product in categoryProducts[category]!) {
+        if (product.title == title) {
+          currentProduct.value = product;
+          break;
+        }
+      }
+    }
+    
     // Reset quantity and color when viewing new product
     quantity.value = 1;
     colorIndex.value = 0;
+    sizeIndex.value = 0;
   }
 
   void toggleFavorite(int index) {
@@ -818,5 +835,31 @@ class ProductController extends GetxController {
 
   bool isFavorite(int index) {
     return favorites.contains(index);
+  }
+
+  void setRelatedProducts(List<Product> products) {
+    relatedProducts.value = products;
+  }
+
+  void setSizeIndex(int index) {
+    sizeIndex.value = index;
+  }
+
+  void addToCart(Product product) {
+    cartItems.add(product);
+    updateCartTotal();
+  }
+
+  void buyNow(Product product) {
+    addToCart(product);
+    // Navigate to checkout or cart page
+    Get.toNamed('/cart');
+  }
+
+  void updateCartTotal() {
+    cartTotal.value = 0;
+    for (var item in cartItems) {
+      cartTotal.value += item.price;
+    }
   }
 }

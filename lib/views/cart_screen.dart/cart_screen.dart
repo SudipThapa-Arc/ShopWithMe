@@ -48,7 +48,7 @@ class CartScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.15),
+                              color: Colors.grey.withAlpha(38),
                               blurRadius: 8,
                               offset: const Offset(0, 2),
                             ),
@@ -91,7 +91,7 @@ class CartScreen extends StatelessWidget {
                                       "Weight: ${index == 0 ? "2kg" : "1kg"}",
                                       style: TextStyle(
                                         fontSize: min(screenSize.width * 0.03, 14),
-                                        color: darkFontGrey.withOpacity(0.7),
+                                        color: darkFontGrey.withAlpha(178),
                                         fontFamily: semibold,
                                       ),
                                     ),
@@ -163,7 +163,7 @@ class CartScreen extends StatelessWidget {
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.delete_outline,
-                                  color: redColor.withOpacity(0.9),
+                                  color: redColor.withAlpha(230),
                                   size: min(screenSize.width * 0.05, 24),
                                 ),
                               ),
@@ -181,7 +181,7 @@ class CartScreen extends StatelessWidget {
                     color: whiteColor,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.15),
+                        color: Colors.grey.withAlpha(38),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -206,9 +206,9 @@ class CartScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildPriceText("Total:", darkFontGrey.withOpacity(0.7), screenSize),
-                                  buildPriceText("VAT:", darkFontGrey.withOpacity(0.7), screenSize),
-                                  buildPriceText("Delivery fee:", darkFontGrey.withOpacity(0.7), screenSize),
+                                  buildPriceText("Total:", darkFontGrey.withAlpha(178), screenSize),
+                                  buildPriceText("VAT:", darkFontGrey.withAlpha(178), screenSize),
+                                  buildPriceText("Delivery fee:", darkFontGrey.withAlpha(178), screenSize),
                                   SizedBox(height: min(screenSize.width * 0.02, 10)),
                                   buildPriceText("Sub Total:", darkFontGrey, screenSize, isBold: true),
                                 ],

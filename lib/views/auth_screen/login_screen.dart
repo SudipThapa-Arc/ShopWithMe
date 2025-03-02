@@ -100,19 +100,37 @@ class Loginscreen extends StatelessWidget {
                       textColor: whiteColor,
                       color: redColor,
                       onPress: () async {
+                        // First, unfocus any text fields to prevent the pointer binding error
+                        FocusScope.of(context).unfocus();
+                        
                         if (controller.isCheck.value) {
-                          controller.isLoading(true);
-                          await controller.login(
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
-                          ).then((value) {
-                            if (value != null) {
-                              // ignore: use_build_context_synchronously
-                              VxToast.show(context, msg: "Logged in successfully");
-                              Get.offAll(() => const Home());
+                          // Add validation for empty fields
+                          if (emailController.text.isNotEmpty && 
+                              passwordController.text.isNotEmpty) {
+                            controller.isLoading(true);
+                            
+                            try {
+                              // Simplified login flow
+                              final result = await controller.login(
+                                emailController.text.trim(),
+                                passwordController.text.trim(),
+                              );
+                              
+                              // If login was successful, navigate to home
+                              if (result != null) {
+                                // Add a small delay before navigation to ensure focus is properly cleared
+                                await Future.delayed(Duration(milliseconds: 100));
+                                Get.offAll(() => const Home());
+                                VxToast.show(context, msg: "Logged in successfully");
+                              }
+                            } catch (e) {
+                              VxToast.show(context, msg: "Login error: ${e.toString()}");
+                            } finally {
+                              controller.isLoading(false);
                             }
-                          });
-                          controller.isLoading(false);
+                          } else {
+                            VxToast.show(context, msg: "Please fill all the fields");
+                          }
                         } else {
                           VxToast.show(context, 
                             msg: "Please agree to terms & conditions"

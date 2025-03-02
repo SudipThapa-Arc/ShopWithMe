@@ -151,10 +151,7 @@ class CategoryDetails extends StatelessWidget {
                               var product = products[index];
                               return GestureDetector(
                                 onTap: () {
-                                  controller.setCurrentProduct(
-                                    title: product.title,
-                                    price: product.price,
-                                  );
+                                  controller.currentProduct.value = product;
                                   Get.to(
                                     () => ItemDetails(
                                       title: product.title,
