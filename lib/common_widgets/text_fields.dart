@@ -4,14 +4,17 @@ import 'package:shopwithme/constants/consts.dart';
 Widget customtextfield({
   String? title,
   String? hint,
-  controller, required bool isPass,
+  TextEditingController? controller,
+  required bool isPass,
 }) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       title!.text.fontFamily(semibold).size(16).color(redColor).make(),
       5.heightBox,
       TextFormField(
-        // controller: controller,
+        controller: controller,
+        obscureText: isPass,
         decoration: InputDecoration(
           hintStyle: TextStyle(fontFamily: semibold, color: fontGrey),
           hintText: hint,
@@ -20,8 +23,9 @@ Widget customtextfield({
           filled: true,
           border: InputBorder.none,
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: redColor)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: redColor)
+          ),
         ),
       ),
     ],

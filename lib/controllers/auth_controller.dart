@@ -63,36 +63,36 @@ class AuthController extends GetxController {
       
       isLoading(true);
       
-      // Attempt to sign in
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      // Attempt to sign in with existing credentials
+      final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim()
       );
       
-      // Verify if user exists in Firestore
-      var userData = await _firestore
-          .collection(usersCollection)
-          .doc(userCredential.user!.uid)
-          .get();
-      
-      if (!userData.exists) {
-        Get.snackbar(
-          "Error",
-          "User data not found in database",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.withAlpha(178),
-          colorText: Colors.white,
-          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-          borderRadius: 10,
-        );
-        await _auth.signOut();
-        return null;
+      // If login successful, verify user data exists
+      if (userCredential.user != null) {
+        final userData = await _firestore
+            .collection(usersCollection)
+            .doc(userCredential.user!.uid)
+            .get();
+        
+        if (userData.exists) {
+          // User exists in Firestore, return credentials
+          return userCredential;
+        } else {
+          // User exists in Auth but not in Firestore
+          await _auth.signOut();
+          Get.snackbar(
+            "Error",
+            "User data not found. Please register first.",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.red.withAlpha(178),
+            colorText: Colors.white,
+          );
+          return null;
+        }
       }
-      
-      // Login successful - just return the credential
-      return userCredential;
     } on FirebaseAuthException catch (e) {
-      // Handle specific Firebase Auth errors
       String errorMessage;
       switch (e.code) {
         case 'user-not-found':
@@ -120,25 +120,21 @@ class AuthController extends GetxController {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.withAlpha(178),
         colorText: Colors.white,
-        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-        borderRadius: 10,
       );
       return null;
     } catch (e) {
-      // Handle other unexpected errors
       Get.snackbar(
         "Error",
         "An unexpected error occurred: ${e.toString()}",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red.withAlpha(178),
         colorText: Colors.white,
-        margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-        borderRadius: 10,
       );
       return null;
     } finally {
       isLoading(false);
     }
+    return null;
   }
 
   Future<UserCredential?> registerUser(String email, String password) async {
@@ -235,18 +231,30 @@ class AuthController extends GetxController {
     required String name,
     required String uid,
   }) async {
-    DocumentReference store = _firestore.collection(usersCollection).doc(uid);
-    await store.set({
-      'name': name,
-      'password': password,
-      'email': email,
-      'uid': uid,
-      'imageUrl': '',
-      'cart_count': "00",
-      'wishlist_count': "00",
-      'order_count': "00",
-      'created_at': DateTime.now(),
-    });
+    try {
+      DocumentReference store = _firestore.collection(usersCollection).doc(uid);
+      await store.set({
+        'name': name,
+        'password': password,
+        'email': email,
+        'uid': uid,
+        'imageUrl': '',
+        'cart_count': "00",
+        'wishlist_count': "00",
+        'order_count': "00",
+        'created_at': DateTime.now(),
+      });
+    } catch (e) {
+      debugPrint('Error storing user data: $e');
+      Get.snackbar(
+        "Error",
+        "Failed to store user data: ${e.toString()}",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withAlpha(178),
+        colorText: Colors.white,
+      );
+      rethrow;
+    }
   }
 
   Future<void> signout() async {

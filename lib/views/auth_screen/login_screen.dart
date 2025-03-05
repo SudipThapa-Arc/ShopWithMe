@@ -11,17 +11,35 @@ import 'package:shopwithme/common_widgets/text_fields.dart';
 import '../../common_widgets/common_button.dart';
 import '../home_screen/home.dart';
 
-class Loginscreen extends StatelessWidget {
+class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var controller = Get.put(AuthController());
-    
-    // Add TextEditingControllers
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
+  State<Loginscreen> createState() => _LoginscreenState();
+}
 
+class _LoginscreenState extends State<Loginscreen> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late AuthController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(AuthController());
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return bgWidget(
         child: Scaffold(
       backgroundColor: Colors.transparent,
@@ -52,10 +70,12 @@ class Loginscreen extends StatelessWidget {
                     isPass: true,
                   ),
                   Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () {},
-                          child: forgotpassword.text.color(redColor).make())),
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: forgotpassword.text.color(redColor).make()
+                    )
+                  ),
                   5.heightBox,
                   Row(
                     children: [
@@ -96,47 +116,49 @@ class Loginscreen extends StatelessWidget {
                   ),
                   5.heightBox,
                   custombutton(
-                      title: login,
-                      textColor: whiteColor,
-                      color: redColor,
-                      onPress: () async {
-                        // First, unfocus any text fields to prevent the pointer binding error
-                        FocusScope.of(context).unfocus();
+                    title: login,
+                    textColor: whiteColor,
+                    color: redColor,
+                    onPress: () async {
+                      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+                        VxToast.show(context, msg: "Please fill all fields");
+                        return;
+                      }
+
+                      if (!controller.isCheck.value) {
+                        VxToast.show(context, msg: "Please agree to terms & conditions");
+                        return;
+                      }
+
+                      try {
+                        controller.isLoading(true);
+                        // Show loading indicator
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(child: CircularProgressIndicator()),
+                        );
                         
-                        if (controller.isCheck.value) {
-                          // Add validation for empty fields
-                          if (emailController.text.isNotEmpty && 
-                              passwordController.text.isNotEmpty) {
-                            controller.isLoading(true);
-                            
-                            try {
-                              // Simplified login flow
-                              final result = await controller.login(
-                                emailController.text.trim(),
-                                passwordController.text.trim(),
-                              );
-                              
-                              // If login was successful, navigate to home
-                              if (result != null) {
-                                // Add a small delay before navigation to ensure focus is properly cleared
-                                await Future.delayed(Duration(milliseconds: 100));
-                                Get.offAll(() => const Home());
-                                VxToast.show(context, msg: "Logged in successfully");
-                              }
-                            } catch (e) {
-                              VxToast.show(context, msg: "Login error: ${e.toString()}");
-                            } finally {
-                              controller.isLoading(false);
-                            }
-                          } else {
-                            VxToast.show(context, msg: "Please fill all the fields");
+                        await controller.login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        ).then((value) {
+                          // Hide loading indicator
+                          Navigator.pop(context);
+                          if (value != null) {
+                            VxToast.show(context, msg: "Logged in successfully");
+                            Get.offAll(() => const Home());
                           }
-                        } else {
-                          VxToast.show(context, 
-                            msg: "Please agree to terms & conditions"
-                          );
-                        }
-                      }).box.width(context.screenWidth - 50).make(),
+                        });
+                      } catch (e) {
+                        // Hide loading indicator if error occurs
+                        Navigator.pop(context);
+                        VxToast.show(context, msg: e.toString());
+                      } finally {
+                        controller.isLoading(false);
+                      }
+                    }
+                  ).box.width(context.screenWidth - 50).make(),
                   10.heightBox,
                   createaccount.text.color(fontGrey).make(),
                   10.heightBox,
