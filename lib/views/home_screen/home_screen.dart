@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shopwithme/constants/consts.dart';
 import 'package:shopwithme/constants/common_lists.dart';
-
+import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/inputs.dart';
+import 'package:shopwithme/design_system/typography.dart';
+import 'package:shopwithme/design_system/colors.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,40 +12,22 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: lightGrey,
-        width: context.screenWidth,
-        height: context.screenHeight,
-        child: SafeArea(
+      color: AppColors.background,
+      width: context.screenWidth,
+      height: context.screenHeight,
+      child: SafeArea(
         child: Column(
           children: [
             // Search Bar with improved design
-            Container(
-              height: 60,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search, color: textfieldGrey),
-                  suffixIcon: Container(
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: redColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(Icons.filter_list, color: whiteColor),
-                  ),
-                  filled: true,
-                  fillColor: whiteColor,
-                  hintText: searchhint,
-                  hintStyle: const TextStyle(color: textfieldGrey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+            Padding(
+              padding: const EdgeInsets.all(Spacing.md),
+              child: AppInput(
+                hint: searchhint,
+                prefixIcon: Icons.search,
+                suffixIcon: Icons.filter_list,
+                onSuffixIconPressed: () {
+                  // Handle filter
+                },
               ),
             ),
 
@@ -70,16 +55,19 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
 
-                    20.heightBox,
+                    SizedBox(height: Spacing.lg),
                     
                     // Categories Section
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(Spacing.md),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          "Categories".text.size(20).bold.make(),
-                          10.heightBox,
+                          Text(
+                            "Categories",
+                            style: AppTypography.titleLarge,
+                          ),
+                          SizedBox(height: Spacing.sm),
                           GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -112,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    20.heightBox,
+                    SizedBox(height: Spacing.lg),
 
                     // Featured Products Section
                     Container(
@@ -183,7 +171,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    20.heightBox,
+                    SizedBox(height: Spacing.lg),
 
                     // Flash Sale Section
                     Container(
@@ -275,7 +263,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    20.heightBox,
+                    SizedBox(height: Spacing.lg),
 
                     // Grid Products
                     Padding(

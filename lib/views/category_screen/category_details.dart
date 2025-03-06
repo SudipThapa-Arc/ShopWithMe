@@ -1,312 +1,300 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopwithme/constants/colors.dart';
 import 'package:shopwithme/constants/common_lists.dart';
-import 'package:shopwithme/constants/styles.dart';
-import 'package:shopwithme/views/category_screen/item_details.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:shopwithme/controllers/product_controller.dart';
+import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/inputs.dart';
+import 'package:shopwithme/views/home_screen/components/product_card.dart';
+import 'package:shopwithme/views/category_screen/item_details.dart';
 
-class CategoryDetails extends StatelessWidget {
+class CategoryDetails extends StatefulWidget {
   final String title;
   const CategoryDetails({super.key, required this.title});
 
   @override
-  Widget build(BuildContext context) {
-    var controller = Get.find<ProductController>();
-    controller.setCurrentCategory(title);
+  State<CategoryDetails> createState() => _CategoryDetailsState();
+}
 
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        Get.back();
-      },
-      child: Scaffold(
-        backgroundColor: whiteColor,
+class _CategoryDetailsState extends State<CategoryDetails> with SingleTickerProviderStateMixin {
+  late final ProductController controller;
+  late final AnimationController _animationController;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.find<ProductController>();
+    
+    // Initialize animations
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.1),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOut,
+    ));
+
+    // Initialize category and start animation
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.setCurrentCategory(widget.title);
+      _animationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  // Enhanced category chip with better UI and navigation
+  Widget _buildCategoryChip(String category, bool isSelected) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if (!isSelected) {
+            // Animate out
+            _animationController.reverse().then((_) {
+              controller.setCurrentCategory(category);
+              Get.off(
+                () => CategoryDetails(title: category),
+                transition: Transition.fadeIn,
+                duration: const Duration(milliseconds: 300),
+              );
+            });
+          }
+        },
+        borderRadius: BorderRadius.circular(25),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: Spacing.lg,
+            vertical: Spacing.sm,
+          ),
+          margin: EdgeInsets.only(right: Spacing.sm),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : AppColors.surface,
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(
+              color: isSelected ? AppColors.primary : AppColors.border,
+              width: 1,
+            ),
+            boxShadow: [
+              if (!isSelected)
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isSelected) ...[
+                Icon(
+                  Icons.check_circle,
+                  size: 16,
+                  color: AppColors.onPrimary,
+                ),
+                SizedBox(width: Spacing.xs),
+              ],
+              Text(
+                category,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: isSelected ? AppColors.onPrimary : AppColors.textPrimary,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              if (!isSelected) ...[
+                SizedBox(width: Spacing.xs),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 12,
+                  color: AppColors.textSecondary,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: redColor,
-          title: title.text.white.fontFamily(semibold).make(),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        title: Text(
+          widget.title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          onPressed: () {
+            _animationController.reverse().then((_) => Get.back());
+          },
+        ),
           actions: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.share, color: whiteColor),
+            icon: const Icon(Icons.share, color: AppColors.textPrimary),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.favorite_outline, color: whiteColor),
+            icon: const Icon(Icons.favorite_outline, color: AppColors.textPrimary),
             ),
           ],
         ),
         body: Column(
           children: [
-            20.heightBox,
-            // Search bar
-            Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                color: lightGrey,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  suffixIcon: Icon(Icons.search),
-                  filled: true,
-                  fillColor: lightGrey,
-                  hintText: "Search in Category",
-                  hintStyle: TextStyle(color: darkFontGrey),
+          // Search and Filter Bar with animation
+          SlideTransition(
+            position: _slideAnimation,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Padding(
+            padding: const EdgeInsets.all(Spacing.md),
+            child: Row(
+              children: [
+                Expanded(
+                  child: AppInput(
+                        hint: 'Search in ${widget.title}',
+                    prefixIcon: Icons.search,
+                  ),
+                ),
+                SizedBox(width: Spacing.md),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                  icon: const Icon(Icons.tune),
+                  onPressed: () {
+                    // Show filter options
+                  },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            15.heightBox,
+          ),
 
-            // Categories list
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+          // Categories list with animation
+          SlideTransition(
+            position: _slideAnimation,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Container(
+                height: 48,
+                margin: EdgeInsets.symmetric(vertical: Spacing.sm),
+                child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(
-                    categoryList.length,
-                    (index) => GestureDetector(
-                      onTap: () {
-                        controller.setCurrentCategory(categoryList[index]);
-                        Get.off(
-                          () => CategoryDetails(
-                            title: categoryList[index],
-                          ),
-                          transition: Transition.rightToLeft,
-                          duration: const Duration(milliseconds: 300),
-                        );
-                      },
-                      child: Obx(
-                        () => Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            color: controller.currentCategory.value ==
-                                    categoryList[index]
-                                ? redColor
-                                : lightGrey,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: categoryList[index]
-                                .text
-                                .size(12)
-                                .color(
-                                  controller.currentCategory.value ==
-                                          categoryList[index]
-                                      ? whiteColor
-                                      : darkFontGrey,
-                                )
-                                .fontFamily(semibold)
-                                .make(),
-                          ),
-                        ).box.height(40).make(),
+              itemCount: categoryList.length,
+                  padding: EdgeInsets.symmetric(horizontal: Spacing.md),
+                  physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                final category = categoryList[index];
+                    return Obx(() {
+                final isSelected = controller.currentCategory.value == category;
+                      return _buildCategoryChip(category, isSelected);
+                    });
+                  },
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            20.heightBox,
 
-            // Products grid
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: AppColors.border.withOpacity(0.1),
+          ),
+
+          // Product Grid with animation
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: lightGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+            child: Obx(() {
+              final products = controller.currentCategoryProducts;
+              
+              if (products.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No products found',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
+                );
+              }
+
+              return GridView.builder(
+                padding: const EdgeInsets.all(Spacing.md),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: Spacing.md,
+                  crossAxisSpacing: Spacing.md,
+                  childAspectRatio: 0.75,
                 ),
-                child: Obx(
-                  () {
-                    var products = controller.getCurrentCategoryProducts();
-                    return products.isEmpty
-                        ? Center(
-                            child: "No products found"
-                                .text
-                                .color(darkFontGrey)
-                                .make(),
-                          )
-                        : GridView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
                             itemCount: products.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisExtent: 250,
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                            ),
                             itemBuilder: (context, index) {
-                              var product = products[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  controller.currentProduct.value = product;
-                                  Get.to(
-                                    () => ItemDetails(
-                                      title: product.title,
-                                    ),
-                                    transition: Transition.rightToLeft,
-                                    duration: const Duration(milliseconds: 300),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: whiteColor,
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Stack(
-                                          children: [
-                                            product.image.startsWith('http')
-                                                ? Image.network(
-                                                    product.image,
-                                                    width: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                    loadingBuilder: (context,
-                                                        child,
-                                                        loadingProgress) {
-                                                      if (loadingProgress ==
-                                                          null) {
-                                                        return child;
-                                                      }
-                                                      return Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          value: loadingProgress
-                                                                      .expectedTotalBytes !=
-                                                                  null
-                                                              ? loadingProgress
-                                                                      .cumulativeBytesLoaded /
-                                                                  loadingProgress
-                                                                      .expectedTotalBytes!
-                                                              : null,
-                                                        ),
-                                                      );
-                                                    },
-                                                    errorBuilder: (context,
-                                                            error,
-                                                            stackTrace) =>
-                                                        const Icon(Icons.error),
-                                                  )
-                                                : Image.asset(
-                                                    product.image,
-                                                    width: double.infinity,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                            Positioned(
-                                              right: 0,
-                                              child: IconButton(
-                                                icon: const Icon(
-                                                    Icons.favorite_border),
-                                                onPressed: () {
-                                                  controller
-                                                      .toggleFavorite(index);
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      5.heightBox,
-                                      product.title.text
-                                          .fontFamily(semibold)
-                                          .color(darkFontGrey)
-                                          .size(14)
-                                          .make(),
-                                      5.heightBox,
-                                      Expanded(
-                                        child: Obx(
-                                          () => Row(
-                                            children: List.generate(
-                                              3,
-                                              (i) => Stack(
-                                                alignment: Alignment.center,
-                                                children: [
-                                                  VxBox()
-                                                      .size(25, 25)
-                                                      .roundedFull
-                                                      .color(i == 0
-                                                          ? Colors.red
-                                                          : i == 1
-                                                              ? Colors.blue
-                                                              : Colors.green)
-                                                      .margin(const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 2))
-                                                      .make()
-                                                      .onTap(() {
-                                                    controller.setColorIndex(i);
-                                                  }),
-                                                  Visibility(
-                                                    visible: controller
-                                                            .colorIndex.value ==
-                                                        i,
-                                                    child: const Icon(
-                                                        Icons.done,
-                                                        color: whiteColor,
-                                                        size: 14),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      "\$${product.price}"
-                                          .text
-                                          .color(redColor)
-                                          .fontFamily(bold)
-                                          .size(16)
-                                          .make(),
-                                      Container(
-                                        padding: const EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color: redColor,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: const Icon(
-                                          Icons.add,
-                                          color: whiteColor,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                  final product = products[index];
+                  return FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: ProductCard(
+                        product: product,
+                        onTap: () {
+                          controller.setCurrentProduct(
+                            title: product.title,
+                            price: product.price,
+                          );
+                          Get.to(
+                            () => ItemDetails(title: product.title),
+                            transition: Transition.fadeIn,
+                          );
+                        },
+                    onToggleFavorite: (productId) {
+                      controller.toggleFavorite(productId as int);
+                    },
+                      ),
+                    ),
                               );
                             },
                           );
-                  },
-                ),
-              ),
+            }),
             ),
           ],
-        ),
       ),
     );
   }

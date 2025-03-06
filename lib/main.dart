@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shopwithme/views/splashscreen/splashscreen.dart';
 import 'package:shopwithme/controllers/auth_controller.dart';
 import 'firebase_options.dart';
+import 'package:shopwithme/design_system/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +28,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
-      theme: ThemeData(
-        primaryColor: Colors.red,
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light,
       home: const Splashscreen(), // Start with splash screen
     );
   }

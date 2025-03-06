@@ -2,210 +2,190 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopwithme/constants/consts.dart';
 import 'package:shopwithme/controllers/auth_controller.dart';
-import 'package:shopwithme/common_widgets/applogowidget.dart';
-import 'package:shopwithme/common_widgets/common_button.dart';
-import 'package:shopwithme/common_widgets/bgwidget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/typography.dart';
+import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/buttons.dart';
+import 'package:shopwithme/design_system/inputs.dart';
 // import 'package:velocity_x/velocity_x.dart';
 
-class Signupscreen extends StatefulWidget {
-  const Signupscreen({super.key});
-
-  @override
-  State<Signupscreen> createState() => _SignupscreenState();
-}
-
-class _SignupscreenState extends State<Signupscreen> {
-  bool ischeck = false;
-  var controller = Get.put(AuthController());
-  
-  // Add TextEditingControllers
-  var nameController = TextEditingController();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var retypePasswordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    nameController.addListener(() {
-      print("Name controller updated: '${nameController.text}'");
-      print("Name controller trimmed: '${nameController.text.trim()}'");
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up controllers
-    nameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    retypePasswordController.dispose();
-    super.dispose();
-  }
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return bgWidget(
-        child: Scaffold(
-      backgroundColor: Colors.transparent,
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Center(
+    var controller = Get.find<AuthController>();
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(Spacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              (context.screenHeight * 0.1).heightBox,
-              applogowidget(),
-              15.heightBox,
-              "Join the $appname".text.fontFamily(bold).size(22).white.make(),
-              10.heightBox,
-              Column(
+              SizedBox(height: Spacing.lg),
+              
+              // Header
+              Text(
+                'Create Account',
+                style: AppTypography.displayMedium,
+              ),
+              SizedBox(height: Spacing.xs),
+              Text(
+                'Sign up to start shopping',
+                style: AppTypography.bodyLarge.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              
+              SizedBox(height: Spacing.xxl),
+
+              // Signup Form
+              Form(
+                child: Column(
                 children: [
-                  TextField(
+                    AppInput(
+                      label: 'Full Name',
+                      hint: 'Enter your full name',
                     controller: nameController,
-                    decoration: InputDecoration(
-                      hintText: namehint,
-                      labelText: name,
+                      prefixIcon: Icons.person_outline,
                     ),
-                  ),
-                  5.heightBox,
-                  TextField(
+                    SizedBox(height: Spacing.md),
+                    AppInput(
+                      label: 'Email',
+                      hint: 'Enter your email',
                     controller: emailController,
-                    decoration: InputDecoration(
-                      hintText: emailhint,
-                      labelText: email,
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_outlined,
                     ),
-                  ),
-                  5.heightBox,
-                  TextField(
+                    SizedBox(height: Spacing.md),
+                    AppInput(
+                      label: 'Password',
+                      hint: 'Create a password',
                     controller: passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: passwordhint,
-                      labelText: password,
+                      prefixIcon: Icons.lock_outline,
                     ),
-                  ),
-                  5.heightBox,
-                  TextField(
-                    controller: retypePasswordController,
+                    SizedBox(height: Spacing.md),
+                    AppInput(
+                      label: 'Confirm Password',
+                      hint: 'Confirm your password',
+                      controller: confirmPasswordController,
                     obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: passwordhint,
-                      labelText: retypepassword,
+                      prefixIcon: Icons.lock_outline,
                     ),
-                  ),
+                    
+                    SizedBox(height: Spacing.lg),
+
+                    // Terms and Conditions
                   Row(
                     children: [
-                      Checkbox(
-                        activeColor: redColor,
-                        checkColor: whiteColor,
-                        value: ischeck,
-                        onChanged: (newValue) {
-                          setState(() {
-                            ischeck = newValue!;
-                          });
-                        },
-                      ),
-                      5.widthBox,
+                        Obx(
+                          () => Checkbox(
+                            value: controller.isCheck.value,
+                            onChanged: (value) => controller.toggleCheckbox(),
+                            activeColor: AppColors.primary,
+                          ),
+                        ),
                       Expanded(
                           child: RichText(
-                              text: const TextSpan(children: [
+                            text: TextSpan(
+                              style: AppTypography.bodyMedium,
+                              children: [
+                                const TextSpan(
+                                  text: 'I agree to the ',
+                                  style: TextStyle(color: AppColors.textPrimary),
+                                ),
                         TextSpan(
-                            text: "I agree to the ",
-                            style: TextStyle(
-                                fontFamily: regular, color: fontGrey)),
+                                  text: 'Terms & Conditions',
+                                  style: TextStyle(color: AppColors.primary),
+                                ),
+                                const TextSpan(
+                                  text: ' and ',
+                                  style: TextStyle(color: AppColors.textPrimary),
+                                ),
                         TextSpan(
-                            text: "Terms and Conditions & Privacy Policy",
-                            style: TextStyle(
-                                fontFamily: regular, color: redColor)),
-                      ])))
-                    ],
-                  ),
-                  5.heightBox,
-                  custombutton(
-                      color: ischeck == true ? redColor : lightGrey,
-                      title: signup,
-                      textColor: whiteColor,
-                      onPress: () async {
-                        // Debug prints to check input values
-                        print("Name: '${nameController.text.trim()}'");
-                        print("Email: '${emailController.text.trim()}'");
-                        print("Password: '${passwordController.text.trim()}'");
-                        print("Retype Password: '${retypePasswordController.text.trim()}'");
-                        print("Terms Checked: $ischeck");
+                                  text: 'Privacy Policy',
+                                  style: TextStyle(color: AppColors.primary),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
 
-                        if (ischeck != true) {
-                          VxToast.show(context,
-                              msg: "Please agree to Terms & Conditions");
-                        } else if (nameController.text.trim().isEmpty) {
-                          print("Name validation failed"); // Debug print
-                          VxToast.show(context, msg: "Please enter name");
-                        } else if (emailController.text.trim().isEmpty) {
-                          VxToast.show(context, msg: "Please enter email");
-                        } else if (passwordController.text.trim().isEmpty) {
-                          VxToast.show(context, msg: "Please enter password");
-                        } else if (passwordController.text != retypePasswordController.text) {
-                          VxToast.show(context,
-                              msg: "Passwords don't match");
-                        } else {
-                          try {
-                            controller.isLoading(true);
-                            await controller.registerUser(
-                              emailController.text.trim(),
-                              passwordController.text.trim(),
-                            ).then((value) async {
-                              if (value != null) {
-                                print("Registration successful, storing user data..."); // Debug print
-                                await controller.storeUserData(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                  name: nameController.text.trim(),
-                                  uid: value.user!.uid,
-                                );
-                                VxToast.show(context, msg: "Account created successfully");
-                                Get.back();
-                                if (FirebaseAuth.instance.currentUser != null) {
-                                  print("Your UID: ${FirebaseAuth.instance.currentUser!.uid}");
-                                }
-                              }
-                            });
-                          } catch (e) {
-                            print("Error during registration: $e"); // Debug print
-                            VxToast.show(context, msg: e.toString());
-                          } finally {
-                            controller.isLoading(false);
+                    SizedBox(height: Spacing.lg),
+
+                    // Signup Button
+                    Obx(
+                      () => AppButton(
+                        text: 'Create Account',
+                        onPressed: () {
+                          if (!controller.isCheck.value) {
+                            Get.snackbar(
+                              'Error',
+                              'Please accept terms and conditions',
+                              backgroundColor: AppColors.error,
+                              colorText: AppColors.onPrimary,
+                            );
+                            return;
                           }
-                        }
-                      }).box.width(context.screenWidth - 50).make(),
-                  10.heightBox,
-                  RichText(
-                      text: const TextSpan(children: [
-                    TextSpan(
-                        text: alreadyhaveaccount,
-                        style: TextStyle(fontFamily: bold, color: fontGrey)),
-                    TextSpan(
-                        text: login,
-                        style: TextStyle(fontFamily: bold, color: redColor))
-                  ])).onTap(() {
-                    Get.back();
-                  })
-                ],
-              )
-                  .box
-                  .white
-                  .rounded
-                  .padding(const EdgeInsets.all(16))
-                  .width(context.screenWidth - 50)
-                  .shadowSm
-                  .make(),
-              20.heightBox,
+                          
+                          controller.signUp(
+                            name: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                        },
+                        isLoading: controller.isLoading.value,
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                      ),
+                    ),
+
+                    SizedBox(height: Spacing.xl),
+
+                    // Login Link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: AppTypography.bodyMedium,
+                        ),
+                        TextButton(
+                          onPressed: () => Get.back(),
+                          child: Text(
+                            'Login',
+                            style: AppTypography.labelLarge.copyWith(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
-    ));
+    );
   }
 }

@@ -33,8 +33,6 @@
   <link rel="manifest" href="manifest.json">
   
   <script>
-    // Define serviceWorkerVersion variable
-    var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -92,11 +90,18 @@
 
   <script>
     window.addEventListener('load', function() {
+      // Add build configuration
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
+          serviceWorkerVersion: '{{flutter_service_worker_version}}',
         },
         onEntrypointLoaded: async function(engineInitializer) {
+          // Configure the Flutter engine
+          _flutter.loader.buildConfig = {
+            canvasKitBaseUrl: "canvaskit/",
+            renderer: "canvaskit" // or "html"
+          };
+          
           try {
             const appRunner = await engineInitializer.initializeEngine();
             await appRunner.runApp();

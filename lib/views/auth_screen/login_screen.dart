@@ -167,7 +167,7 @@ class _LoginscreenState extends State<Loginscreen> {
                       textColor: whiteColor,
                       color: goldencolor,
                       onPress: () {
-                        Get.to(() => Signupscreen());
+                        Get.to(() => const SignupScreen());
                       }).box.width(context.screenWidth - 50).make(),
                   10.heightBox,
                   loginwith.text.color(fontGrey).make(),

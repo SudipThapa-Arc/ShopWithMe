@@ -2,14 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:shopwithme/constants/colors.dart';
-import 'package:shopwithme/constants/styles.dart';
-import 'dart:math';
 import 'package:get/get.dart';
 import 'package:shopwithme/views/auth_screen/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopwithme/views/profile_screen/edit_profile.dart';
 import 'package:shopwithme/controllers/auth_controller.dart';
 import 'package:shopwithme/models/user_model.dart';
+import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/typography.dart';
+import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/buttons.dart';
+import 'package:shopwithme/design_system/cards.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -58,226 +62,379 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    final bool isLargeScreen = screenSize.width > 1200;
-    final double maxContentWidth = isLargeScreen ? 1200 : screenSize.width;
-        
-        return Scaffold(
-          backgroundColor: Colors.grey[50],
-          appBar: AppBar(
-            backgroundColor: redColor,
-            elevation: 0,
-            title: Text(
-              "Profile",
-              style: TextStyle(
-                color: whiteColor,
-                fontFamily: bold,
-                fontSize: min(screenSize.width * 0.045, 22),
-              ),
-            ),
-            actions: [
-              IconButton(
-            onPressed: handleLogout,
-                icon: Icon(
-              Icons.logout,
-                  color: whiteColor,
-                  size: min(screenSize.width * 0.05, 24),
-                ),
-              ),
-            ],
+    var controller = Get.find<AuthController>();
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        title: Text(
+          'Profile',
+          style: AppTypography.titleLarge,
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit, color: AppColors.textPrimary),
+            onPressed: () {
+              if (controller.currentUser.value != null) {
+                final user = controller.currentUser.value!;
+                final userModel = UserModel(
+                  id: user.uid,
+                  name: user.displayName ?? '',
+                  email: user.email ?? '',
+                  phone: user.phoneNumber,
+                  imageUrl: user.photoURL,
+                );
+                Get.to(
+                  () => EditProfile(currentUser: userModel),
+                  transition: Transition.rightToLeft,
+                  duration: const Duration(milliseconds: 300),
+                )?.then((_) {
+                  setState(() {});
+                });
+              }
+            },
           ),
-          body: SafeArea(
-            child: Center(
-              child: SizedBox(
-                width: maxContentWidth,
-                child: SingleChildScrollView(
-                  child: Column(
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(Spacing.md),
+        child: Column(
+          children: [
+            // Profile Header
+            AppCard(
+              child: Stack(
+                children: [
+                  Row(
                     children: [
-                  // Profile Header Section with user data
-                  FutureBuilder<UserModel?>(
-                    future: _authController.getCurrentUser(),
-                    builder: (context, snapshot) {
-                      return Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(min(screenSize.width * 0.04, 20)),
-                        decoration: BoxDecoration(
-                          color: redColor,
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                              Container(
-                                height: min(screenSize.width * 0.25, 120),
-                                width: min(screenSize.width * 0.25, 120),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: whiteColor, width: 3),
-                                    image: DecorationImage(
-                                    image: NetworkImage(
-                                        snapshot.data?.imageUrl ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCbC1JPjywAh3dxU_TJkwR98f9DSx1IOlPEg&s",
-                                    ),
+                      Hero(
+                        tag: 'profile-avatar',
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundColor: AppColors.primary,
+                          child: controller.currentUser.value?.photoURL != null
+                              ? ClipOval(
+                                  child: Image.network(
+                                    controller.currentUser.value!.photoURL!,
+                                    width: 80,
+                                    height: 80,
                                     fit: BoxFit.cover,
                                   ),
-                              ),
-                            ),
-                                if (snapshot.hasData)
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: GestureDetector(
-                                      onTap: () {
-                                        if (snapshot.data != null) {
-                                          print("Edit button clicked"); // Debug print
-                                          navigateToEditProfile(snapshot.data!);
-                                        }
-                                      },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: golden,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: whiteColor, width: 2),
-                                  ),
-                                  child: Icon(
-                                  Icons.edit,
-                                    color: whiteColor,
-                                    size: min(screenSize.width * 0.04, 18),
+                                )
+                              : Text(
+                                  controller.currentUser.value?.displayName?[0].toUpperCase() ?? 'U',
+                                  style: AppTypography.headlineLarge.copyWith(
+                                    color: AppColors.onPrimary,
                                   ),
                                 ),
+                        ),
+                      ),
+                      SizedBox(width: Spacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.currentUser.value?.displayName ?? 'User',
+                              style: AppTypography.titleLarge,
+                            ),
+                            SizedBox(height: Spacing.xs),
+                            Text(
+                              controller.currentUser.value?.email ?? 'email@example.com',
+                              style: AppTypography.bodyMedium.copyWith(
+                                color: AppColors.textSecondary,
                               ),
                             ),
+                            if (controller.currentUser.value?.phoneNumber != null) ...[
+                              SizedBox(height: Spacing.xs),
+                              Text(
+                                controller.currentUser.value!.phoneNumber!,
+                                style: AppTypography.bodyMedium.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
                           ],
                         ),
-                        SizedBox(height: min(screenSize.width * 0.03, 16)),
-                            if (snapshot.connectionState == ConnectionState.waiting)
-                              const CircularProgressIndicator(color: whiteColor)
-                            else ...[
-                        Text(
-                                snapshot.data?.name ?? "Loading...",
-                          style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: bold,
-                            fontSize: min(screenSize.width * 0.045, 22),
-                          ),
-                        ),
-                        SizedBox(height: min(screenSize.width * 0.01, 8)),
-                        Text(
-                                snapshot.data?.email ?? "Loading...",
-                          style: TextStyle(
-                            color: whiteColor.withOpacity(0.9),
-                            fontSize: min(screenSize.width * 0.035, 16),
-                          ),
-                        ),
-                      ],
-                          ],
-                        ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                  
-                  // Profile Options
-                  Padding(
-                    padding: EdgeInsets.all(min(screenSize.width * 0.04, 20)),
-                    child: FutureBuilder<UserModel?>(
-                      future: _authController.getCurrentUser(),
-                      builder: (context, snapshot) {
-                        return Column(
-                          children: [
-                            buildProfileTile(
-                              icon: Icons.person_outline,
-                              title: "Edit Profile",
-                              color: Colors.blue,
-                              screenSize: screenSize,
-                              onTap: () {
-                                print("Edit profile tile clicked");
-                                if (snapshot.data != null) {
-                                  navigateToEditProfile(snapshot.data!);
-                                }
-                              },
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Spacing.sm,
+                        vertical: Spacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.verified,
+                            size: 16,
+                            color: AppColors.primary,
+                          ),
+                          SizedBox(width: Spacing.xs),
+                          Text(
+                            'Verified',
+                            style: AppTypography.bodyMedium.copyWith(
+                              color: AppColors.primary,
                             ),
-                            buildProfileTile(
-                              icon: Icons.shopping_bag_outlined,
-                              title: "My Orders",
-                              color: Colors.orange,
-                              screenSize: screenSize,
-                            ),
-                            buildProfileTile(
-                              icon: Icons.favorite_border,
-                              title: "My Wishlist",
-                              color: Colors.red,
-                              screenSize: screenSize,
-                            ),
-                            buildProfileTile(
-                              icon: Icons.location_on_outlined,
-                              title: "Shipping Address",
-                              color: Colors.green,
-                              screenSize: screenSize,
-                            ),
-                          ],
-                        );
-                      },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
+
+            SizedBox(height: Spacing.lg),
+
+            // Orders Section
+            AppCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'My Orders',
+                        style: AppTypography.titleLarge,
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Navigate to all orders
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'View All',
+                              style: AppTypography.labelLarge.copyWith(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 12,
+                              color: AppColors.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Spacing.md),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildOrderStatus(
+                        icon: Icons.pending_outlined,
+                        label: 'Pending',
+                        count: '2',
+                        color: AppColors.warning,
+                      ),
+                      _buildOrderStatus(
+                        icon: Icons.local_shipping_outlined,
+                        label: 'Processing',
+                        count: '1',
+                        color: AppColors.info,
+                      ),
+                      _buildOrderStatus(
+                        icon: Icons.done_all,
+                        label: 'Completed',
+                        count: '5',
+                        color: AppColors.success,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: Spacing.lg),
+
+            // Settings Section
+            AppCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: Spacing.md,
+                      top: Spacing.md,
+                      bottom: Spacing.sm,
+                    ),
+                    child: Text(
+                      'Settings',
+                      style: AppTypography.titleLarge,
+                    ),
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.shopping_bag_outlined,
+                    title: 'My Orders',
+                    subtitle: 'View and track orders',
+                    onTap: () {
+                      // Navigate to orders
+                    },
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.favorite_border,
+                    title: 'Wishlist',
+                    subtitle: 'Your favorite items',
+                    onTap: () {
+                      // Navigate to wishlist
+                    },
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.location_on_outlined,
+                    title: 'Addresses',
+                    subtitle: 'Manage delivery addresses',
+                    onTap: () {
+                      // Navigate to addresses
+                    },
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.payment_outlined,
+                    title: 'Payment Methods',
+                    subtitle: 'Manage payment options',
+                    onTap: () {
+                      // Navigate to payment methods
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: Spacing.lg),
+
+            // Support Section
+            AppCard(
+              child: Column(
+                children: [
+                  _buildSettingsItem(
+                    icon: Icons.help_outline,
+                    title: 'Help & Support',
+                    onTap: () {
+                      // Navigate to help
+                    },
+                  ),
+                  _buildSettingsItem(
+                    icon: Icons.privacy_tip_outlined,
+                    title: 'Privacy Policy',
+                    onTap: () {
+                      // Navigate to privacy policy
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: Spacing.lg),
+
+            // Logout Button
+            AppButton(
+              text: 'Logout',
+              onPressed: () {
+                Get.defaultDialog(
+                  title: 'Logout',
+                  titleStyle: AppTypography.titleLarge,
+                  middleText: 'Are you sure you want to logout?',
+                  middleTextStyle: AppTypography.bodyLarge,
+                  confirm: AppButton(
+                    text: 'Logout',
+                    onPressed: () {
+                      handleLogout();
+                    },
+                    type: ButtonType.outline,
+                  ),
+                  cancel: AppButton(
+                    text: 'Cancel',
+                    onPressed: () => Get.back(),
+                    type: ButtonType.text,
+                  ),
+                );
+              },
+              type: ButtonType.outline,
+              size: ButtonSize.large,
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget buildProfileTile({
+  Widget _buildOrderStatus({
     required IconData icon,
-    required String title,
+    required String label,
+    required String count,
     required Color color,
-    required Size screenSize,
-    VoidCallback? onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-      margin: EdgeInsets.only(bottom: min(screenSize.width * 0.03, 16)),
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(min(screenSize.width * 0.02, 10)),
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(Spacing.sm),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
+            shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: color, size: min(screenSize.width * 0.05, 24)),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: darkFontGrey,
-            fontFamily: semibold,
-            fontSize: min(screenSize.width * 0.035, 16),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
           ),
         ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          color: darkFontGrey,
-          size: min(screenSize.width * 0.04, 18),
+        SizedBox(height: Spacing.xs),
+        Text(
+          label,
+          style: AppTypography.bodyMedium,
+        ),
+        Text(
+          count,
+          style: AppTypography.labelLarge.copyWith(
+            color: color,
+            fontWeight: FontWeight.bold,
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildSettingsItem({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: EdgeInsets.all(Spacing.xs),
+        decoration: BoxDecoration(
+          color: AppColors.primaryContainer,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: AppColors.primary),
       ),
+      title: Text(title, style: AppTypography.bodyLarge),
+      subtitle: subtitle != null ? Text(
+        subtitle,
+        style: AppTypography.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
+      ) : null,
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 16,
+        color: AppColors.textSecondary,
+      ),
+      onTap: onTap,
     );
   }
 }

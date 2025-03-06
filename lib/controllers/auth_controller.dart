@@ -11,7 +11,8 @@ import 'package:shopwithme/services/user_service.dart';
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  late Rx<User?> _user;
+  final currentUser = Rxn<User>();
+  final user = Rxn<User>();
   var isCheck = false.obs;
   var isLoading = false.obs;
 
@@ -19,10 +20,13 @@ class AuthController extends GetxController {
   final UserService _userService = UserService();
 
   @override
-  void onReady() {
-    super.onReady();
-    _user = Rx<User?>(_auth.currentUser);
-    _user.bindStream(_auth.userChanges());
+  void onInit() {
+    super.onInit();
+    currentUser.value = _auth.currentUser;
+    _auth.authStateChanges().listen((User? user) {
+      currentUser.value = user;
+      this.user.value = user;
+    });
   }
 
   // Email validation method
