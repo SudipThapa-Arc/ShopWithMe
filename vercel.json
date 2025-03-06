@@ -1,6 +1,6 @@
 {
-    "buildCommand": "flutter/bin/flutter build web --release",
+    "buildCommand": "flutter/bin/flutter config --enable-web && flutter/bin/flutter build web --release",
     "outputDirectory": "build/web",
     "framework": null,
-    "installCommand": "if cd flutter; then git pull && cd .. ; else git clone https://github.com/flutter/flutter.git; fi && flutter/bin/flutter config --enable-web && flutter/bin/flutter pub get"
-  }
+    "installCommand": "if cd flutter; then git pull && cd .. ; else git clone -b stable https://github.com/flutter/flutter.git; fi && flutter/bin/flutter pub get"
+}
