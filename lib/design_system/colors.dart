@@ -32,4 +32,7 @@ class AppColors {
   static const textDisabled = Color(0xFFADB5BD);
 
   static const Color border = Color(0xFFE0E0E0);
+  static const Color shadow = Color(0xFF000000); // For shadows/elevation
+
+  static const Color primaryDark = Color(0xFF005D91); // Darker shade of primary
 } 

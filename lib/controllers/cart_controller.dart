@@ -166,6 +166,11 @@ class CartController extends GetxController {
       );
     });
   }
+
+  void removeItem(int index) {
+    cartItems.removeAt(index);
+    _updateTotal();
+  }
 }
 
 class CartItem {

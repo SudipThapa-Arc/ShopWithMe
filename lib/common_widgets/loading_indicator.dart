@@ -35,6 +35,7 @@ class LoadingButton extends StatelessWidget {
   final double height;
   final double borderRadius;
   final EdgeInsetsGeometry padding;
+  final Gradient? gradient;
 
   const LoadingButton({
     super.key,
@@ -46,6 +47,7 @@ class LoadingButton extends StatelessWidget {
     this.height = 48.0,
     this.borderRadius = 8.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
+    this.gradient,
   });
 
   @override

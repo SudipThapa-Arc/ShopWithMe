@@ -67,7 +67,7 @@ enum ButtonType {
   primary,
   secondary,
   outline,
-  text;
+  text, error;
 
   ButtonStyle get style {
     switch (this) {
@@ -96,6 +96,9 @@ enum ButtonType {
           foregroundColor: AppColors.primary,
           shape: RoundedRectangleBorder(borderRadius: AppBorders.roundedSm),
         );
+      case ButtonType.error:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 }
