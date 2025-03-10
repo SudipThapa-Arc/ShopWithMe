@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:shopwithme/constants/images.dart';
 import 'package:shopwithme/models/product_model.dart';
+import 'package:flutter/material.dart';
 
 class ProductController extends GetxController {
   var quantity = 1.obs;
@@ -14,6 +15,11 @@ class ProductController extends GetxController {
   var sizeIndex = 0.obs;
   final RxList<Product> cartItems = <Product>[].obs;
   final RxDouble cartTotal = 0.0.obs;
+  final isLoading = true.obs;
+  final hasError = false.obs;
+  final errorMessage = ''.obs;
+  final RxList<String> sizes = <String>[].obs;
+  final RxList<String> colors = <String>[].obs;
 
   final Map<String, List<Product>> categoryProducts = {
     'Women Clothing': [
@@ -1225,6 +1231,12 @@ class ProductController extends GetxController {
     ],
   };
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCategories();
+  }
+
   void increaseQuantity() {
     if (quantity.value < 99) {
       quantity.value++;
@@ -1251,23 +1263,10 @@ class ProductController extends GetxController {
 
   RxList<Product> get currentCategoryProducts => relatedProducts;
 
-  void setCurrentProduct({
-    required String title,
-    required double price,
-  }) {
-    currentProductTitle.value = title;
-    currentProductPrice.value = price;
-    
-    // Find and set the actual product object
-    for (var category in categoryProducts.keys) {
-      for (var product in categoryProducts[category]!) {
-        if (product.title == title) {
-          currentProduct.value = product;
-          break;
-        }
-      }
-    }
-    
+  void setCurrentProduct(Product product, {required String title, required double price}) {
+    currentProduct.value = product;
+    sizes.value = product.sizes ?? [];
+    colors.value = product.colors;
     // Reset quantity and color when viewing new product
     quantity.value = 1;
     colorIndex.value = 0;
@@ -1309,6 +1308,46 @@ class ProductController extends GetxController {
     cartTotal.value = 0;
     for (var item in cartItems) {
       cartTotal.value += item.price;
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      isLoading.value = true;
+      hasError.value = false;
+      
+      // Simulate network delay
+      await Future.delayed(Duration(seconds: 2));
+      
+      // Your existing code to fetch and process categories
+      // ...
+      
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      hasError.value = true;
+      errorMessage.value = e.toString();
+      debugPrint('Error fetching categories: $e');
+    }
+  }
+
+  Future<void> fetchProductsByCategory(String category) async {
+    try {
+      isLoading.value = true;
+      hasError.value = false;
+      
+      // Simulate network delay
+      await Future.delayed(Duration(seconds: 1));
+      
+      // Your existing code to fetch products by category
+      // ...
+      
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      hasError.value = true;
+      errorMessage.value = e.toString();
+      debugPrint('Error fetching products: $e');
     }
   }
 }

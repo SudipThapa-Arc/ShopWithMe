@@ -1,25 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:shopwithme/constants/consts.dart';
+import 'package:animations/animations.dart';
+import 'package:shopwithme/design_system/colors.dart';
 
-class AnimatedButton extends StatefulWidget {
+class AnimatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
-  final Color? color;
-  final EdgeInsetsGeometry? padding;
+  final Color color;
+  final Color textColor;
+  final double height;
+  final double borderRadius;
+  final EdgeInsetsGeometry padding;
 
   const AnimatedButton({
     super.key,
     required this.onPressed,
     required this.child,
-    this.color,
-    this.padding,
+    this.color = AppColors.primary,
+    this.textColor = AppColors.onPrimary,
+    this.height = 48.0,
+    this.borderRadius = 8.0,
+    this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
   });
 
   @override
-  State<AnimatedButton> createState() => _AnimatedButtonState();
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: OpenContainer(
+        transitionDuration: const Duration(milliseconds: 300),
+        openBuilder: (context, _) => const SizedBox.shrink(),
+        closedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        closedColor: color,
+        closedElevation: 0,
+        closedBuilder: (context, openContainer) {
+          return InkWell(
+            onTap: () {
+              onPressed();
+            },
+            child: Container(
+              padding: padding,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+              child: Center(
+                child: DefaultTextStyle(
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  child: child,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
-class _AnimatedButtonState extends State<AnimatedButton>
+class AnimatedIconButton extends StatefulWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+  final Color color;
+  final Color backgroundColor;
+  final double size;
+
+  const AnimatedIconButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+    this.color = AppColors.primary,
+    this.backgroundColor = Colors.transparent,
+    this.size = 24.0,
+  });
+
+  @override
+  State<AnimatedIconButton> createState() => _AnimatedIconButtonState();
+}
+
+class _AnimatedIconButtonState extends State<AnimatedIconButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -28,14 +91,10 @@ class _AnimatedButtonState extends State<AnimatedButton>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
       vsync: this,
+      duration: const Duration(milliseconds: 200),
     );
-
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.95,
-    ).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.8).animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
@@ -60,28 +119,23 @@ class _AnimatedButtonState extends State<AnimatedButton>
       onTapCancel: () => _controller.reverse(),
       child: AnimatedBuilder(
         animation: _scaleAnimation,
-        builder: (context, child) => Transform.scale(
-          scale: _scaleAnimation.value,
-          child: Container(
-            decoration: BoxDecoration(
-              color: widget.color ?? redColor,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: widget.backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                widget.icon,
+                color: widget.color,
+                size: widget.size,
+              ),
             ),
-            padding: widget.padding ??
-                const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-            child: widget.child,
-          ),
-        ),
+          );
+        },
       ),
     );
   }

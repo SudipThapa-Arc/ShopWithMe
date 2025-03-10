@@ -7,7 +7,7 @@ import 'package:shopwithme/design_system/colors.dart';
 import 'package:shopwithme/design_system/spacing.dart';
 import 'package:shopwithme/design_system/inputs.dart';
 import 'package:shopwithme/views/home_screen/components/product_card.dart';
-import 'package:shopwithme/views/category_screen/item_details.dart';
+import 'package:shopwithme/views/category_screen/product_details.dart';
 
 class CategoryDetails extends StatefulWidget {
   final String title;
@@ -276,6 +276,7 @@ class _CategoryDetailsState extends State<CategoryDetails> with SingleTickerProv
                         product: product,
                         onTap: () {
                           controller.setCurrentProduct(
+                            product,
                             title: product.title,
                             price: product.price,
                           );

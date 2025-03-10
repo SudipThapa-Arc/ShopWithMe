@@ -20,7 +20,9 @@ class AppColors {
 
   // Semantic Colors
   static const success = Color(0xFF4CAF50);
+  static const onSuccess = Colors.white;  // text/icon color on success background
   static const error = Color(0xFFE53935);
+  static const onError = Colors.white;
   static const warning = Color(0xFFFFB300);
   static const info = Color(0xFF2196F3);
 

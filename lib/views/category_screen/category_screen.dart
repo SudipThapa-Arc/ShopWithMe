@@ -10,14 +10,17 @@ import 'package:shopwithme/design_system/colors.dart';
 import 'package:shopwithme/design_system/typography.dart';
 import 'package:shopwithme/design_system/spacing.dart';
 import 'package:shopwithme/design_system/inputs.dart';
+import 'package:shopwithme/common_widgets/shimmer_loading.dart';
+import 'package:shopwithme/common_widgets/error_widgets.dart' as app_errors;
+import 'package:shopwithme/common_widgets/page_transitions.dart';
 
 class CategoryScreen extends StatelessWidget {
   final String category;
   
   const CategoryScreen({
-    Key? key, 
+    super.key, 
     required this.category,
-  }) : super(key: key);
+  });
 
   Widget _buildFeaturedCategoryCard(BuildContext context, String category, int index, ProductController controller) {
     final colors = [
@@ -46,9 +49,8 @@ class CategoryScreen extends StatelessWidget {
       child: InkWell(
         onTap: () {
           controller.setCurrentCategory(category);
-          Get.to(
-            () => CategoryDetails(title: category),
-            transition: Transition.fadeIn,
+          Navigator.of(context).push(
+            AppPageTransition.rightToLeft(CategoryDetails(title: category))
           );
         },
         borderRadius: BorderRadius.circular(15),
@@ -138,14 +140,17 @@ class CategoryScreen extends StatelessWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(AppBorders.radiusMd),
-                    ),
-                    image: DecorationImage(
-                      image: NetworkImage(image),
-                      fit: BoxFit.cover,
+                child: Hero(
+                  tag: 'category_${category}_image',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(AppBorders.radiusMd),
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(image),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -209,145 +214,275 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Center( // Center the content on large screens
+        child: Center(
           child: SizedBox(
             width: maxContentWidth,
-            child: CustomScrollView(
-              slivers: [
-                // Custom App Bar with Search
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(Spacing.md),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Categories',
-                          style: AppTypography.headlineLarge,
+            child: Obx(() {
+              // Show shimmer loading when data is loading
+              if (controller.isLoading.value) {
+                return CustomScrollView(
+                  slivers: [
+                    // App Bar with Search
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(Spacing.md),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Categories',
+                              style: AppTypography.headlineLarge,
+                            ),
+                            SizedBox(height: Spacing.xs),
+                            Text(
+                              'Find everything you need',
+                              style: AppTypography.bodyLarge.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            SizedBox(height: Spacing.md),
+                            // Search Bar
+                            AppInput(
+                              hint: 'Search categories',
+                              prefixIcon: Icons.search,
+                              suffixIcon: Icons.tune,
+                              onSuffixIconPressed: () {
+                                // Handle filter
+                              },
+                            ),
+                          ],
                         ),
-                        SizedBox(height: Spacing.xs),
-                        Text(
-                          'Find everything you need',
-                          style: AppTypography.bodyLarge.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                      ),
+                    ),
+
+                    // Featured Categories Header
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(Spacing.md),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Featured Categories',
+                              style: AppTypography.headlineMedium,
+                            ),
+                            Spacer(),
+                            TextButton(
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'See All',
+                                    style: AppTypography.labelLarge.copyWith(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 12,
+                                    color: AppColors.primary,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: Spacing.md),
-                        // Search Bar
-                        AppInput(
-                          hint: 'Search categories',
-                          prefixIcon: Icons.search,
-                          suffixIcon: Icons.tune,
-                          onSuffixIconPressed: () {
-                            // Handle filter
+                      ),
+                    ),
+
+                    // Featured Categories Shimmer
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 140,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.symmetric(horizontal: Spacing.md),
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: 4,
+                          itemBuilder: (context, index) {
+                            return CategoryListItemShimmer();
                           },
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
 
-                // Featured Categories Header
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(Spacing.md),
-                    child: Row(
-                      children: [
-                        Text(
-                      'Featured Categories',
+                    // All Categories Header
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(Spacing.md),
+                        child: Text(
+                          'All Categories',
                           style: AppTypography.headlineMedium,
                         ),
-                        Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            // Scroll to all categories section
+                      ),
+                    ),
+
+                    // Categories Grid Shimmer
+                    SliverPadding(
+                      padding: EdgeInsets.all(Spacing.md),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return ProductGridItemShimmer();
                           },
-                          child: Row(
-                            children: [
-                              Text(
-                                'See All',
-                                style: AppTypography.labelLarge.copyWith(
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 12,
-                                color: AppColors.primary,
-                              ),
-                            ],
-                          ),
+                          childCount: 8,
                         ),
-                      ],
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: gridCrossAxisCount,
+                          mainAxisSpacing: Spacing.md,
+                          crossAxisSpacing: Spacing.md,
+                          childAspectRatio: 0.8,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-
-                // Featured Categories List
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 140,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(horizontal: Spacing.md),
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: 4, // Show first 4 categories
-                      itemBuilder: (context, index) {
-                        return _buildFeaturedCategoryCard(
-                          context,
-                                categoryList[index],
-                          index,
-                          controller,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-
-                // All Categories Header
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(min(screenSize.width * 0.02, 20)),
-                    child: Text(
-                      'All Categories',
-                      style: TextStyle(
-                        fontSize: min(screenSize.width * 0.03, 24),
-                        fontFamily: bold,
-                        color: darkFontGrey,
+                  ],
+                );
+              }
+              
+              // Show error widget if there's an error
+              if (controller.hasError.value) {
+                return app_errors.ErrorWidget.network(
+                  onRetry: () => controller.fetchCategories(),
+                );
+              }
+              
+              // Show actual content when data is loaded
+              return CustomScrollView(
+                slivers: [
+                  // Custom App Bar with Search
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(Spacing.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Categories',
+                            style: AppTypography.headlineLarge,
+                          ),
+                          SizedBox(height: Spacing.xs),
+                          Text(
+                            'Find everything you need',
+                            style: AppTypography.bodyLarge.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          SizedBox(height: Spacing.md),
+                          // Search Bar
+                          AppInput(
+                            hint: 'Search categories',
+                            prefixIcon: Icons.search,
+                            suffixIcon: Icons.tune,
+                            onSuffixIconPressed: () {
+                              // Handle filter
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ),
 
-                // Categories Grid
-                SliverPadding(
-                  padding: EdgeInsets.all(Spacing.md),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return _buildCategoryGridItem(
-                          context,
-                                          categoryList[index],
-                          categoryImages[index],
-                          index,
-                          controller,
-                        );
-                      },
-                      childCount: 8,
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: gridCrossAxisCount,
-                      mainAxisSpacing: Spacing.md,
-                      crossAxisSpacing: Spacing.md,
-                      childAspectRatio: 0.8,
+                  // Featured Categories Header
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(Spacing.md),
+                      child: Row(
+                        children: [
+                          Text(
+                        'Featured Categories',
+                            style: AppTypography.headlineMedium,
+                          ),
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              // Scroll to all categories section
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'See All',
+                                  style: AppTypography.labelLarge.copyWith(
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 12,
+                                  color: AppColors.primary,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.only(bottom: min(screenSize.width * 0.02, 20)),
-                ),
-              ],
-            ),
+
+                  // Featured Categories List
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 140,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(horizontal: Spacing.md),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 4, // Show first 4 categories
+                        itemBuilder: (context, index) {
+                          return _buildFeaturedCategoryCard(
+                            context,
+                                  categoryList[index],
+                            index,
+                            controller,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+
+                  // All Categories Header
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(min(screenSize.width * 0.02, 20)),
+                      child: Text(
+                        'All Categories',
+                        style: TextStyle(
+                          fontSize: min(screenSize.width * 0.03, 24),
+                          fontFamily: bold,
+                          color: darkFontGrey,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Categories Grid
+                  SliverPadding(
+                    padding: EdgeInsets.all(Spacing.md),
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return _buildCategoryGridItem(
+                            context,
+                                    categoryList[index],
+                            categoryImages[index],
+                            index,
+                            controller,
+                          );
+                        },
+                        childCount: 8,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: gridCrossAxisCount,
+                        mainAxisSpacing: Spacing.md,
+                        crossAxisSpacing: Spacing.md,
+                        childAspectRatio: 0.8,
+                      ),
+                    ),
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.only(bottom: min(screenSize.width * 0.02, 20)),
+                  ),
+                ],
+              );
+            }),
           ),
         ),
       ),
