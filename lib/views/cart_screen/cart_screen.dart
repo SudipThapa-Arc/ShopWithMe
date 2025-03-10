@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shopwithme/controllers/cart_controller.dart';
-import 'package:shopwithme/design_system/colors.dart';
-import 'package:shopwithme/design_system/typography.dart';
-import 'package:shopwithme/design_system/spacing.dart';
-import 'package:shopwithme/design_system/buttons.dart';
-import 'package:shopwithme/common_widgets/loading_indicator.dart';
 import 'package:shopwithme/common_widgets/animated_button.dart';
-import 'package:shopwithme/common_widgets/error_widgets.dart';
-import 'package:shopwithme/common_widgets/shimmer_loading.dart';
-import 'package:shopwithme/models/product_model.dart';
+import 'package:shopwithme/common_widgets/loading_indicator.dart';
+import 'package:shopwithme/design_system/buttons.dart';
+import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/typography.dart';
+import 'package:shopwithme/controllers/cart_controller.dart';
+import 'package:shopwithme/common_widgets/navigation/bottom_nav.dart';
+
+import '../../common_widgets/error_widgets.dart';
+import '../../common_widgets/shimmer_loading.dart';
+
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -120,8 +122,8 @@ class CartScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Row(
-                      children: [
+                  child: Row(
+                    children: [
                         // Product Image with shimmer loading
                         Hero(
                           tag: 'product_${item.product.id}_image',
@@ -162,12 +164,12 @@ class CartScreen extends StatelessWidget {
                         SizedBox(width: Spacing.md),
                         
                         // Product Details
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(Spacing.md),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(Spacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                                 Text(
                                   item.product.title,
                                   style: Theme.of(context).textTheme.titleMedium,
@@ -185,8 +187,8 @@ class CartScreen extends StatelessWidget {
                                 SizedBox(height: Spacing.sm),
                                 
                                 // Quantity controls with improved UI
-                                Row(
-                                  children: [
+                              Row(
+                                children: [
                                     Container(
                                       decoration: BoxDecoration(
                                         color: AppColors.background,
@@ -217,28 +219,28 @@ class CartScreen extends StatelessWidget {
                                             size: 32,
                                           ),
                                         ],
-                                      ),
                                     ),
-                                    
-                                    Spacer(),
-                                    
+                                  ),
+                                  
+                                  Spacer(),
+                                  
                                     // Delete button with tooltip
                                     Tooltip(
                                       message: 'Remove item',
                                       child: AnimatedIconButton(
-                                        icon: Icons.delete_outline_rounded,
-                                        onPressed: () => controller.removeItem(index),
-                                        color: AppColors.error,
+                                    icon: Icons.delete_outline_rounded,
+                                    onPressed: () => controller.removeItem(index),
+                                    color: AppColors.error,
                                         size: 28,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
+                    ],
                     ),
                   ),
                 );
@@ -271,8 +273,8 @@ class CartScreen extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
+                          children: [
+                            Text(
                             'Total Amount',
                             style: AppTypography.titleLarge.copyWith(
                               color: AppColors.textSecondary,
@@ -283,9 +285,9 @@ class CartScreen extends StatelessWidget {
                             style: AppTypography.headlineMedium.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
                       ),
                       SizedBox(height: Spacing.lg),
                       LoadingButton(
@@ -312,51 +314,26 @@ class CartScreen extends StatelessWidget {
           ],
         );
       }),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: 2, // Cart tab index
+        onTap: (index) {
+          // Handle navigation
+          switch (index) {
+            case 0:
+              Get.offAllNamed('/home');
+              break;
+            case 1:
+              Get.offAllNamed('/search');
+              break;
+            case 3:
+              Get.offAllNamed('/wishlist');
+              break;
+            case 4:
+              Get.offAllNamed('/profile');
+              break;
+          }
+        },
+      ),
     );
-  }
-}
-
-// Add this extension to CartController
-extension CartControllerExtension on CartController {
-  void addDummyItems() {
-    final dummyProducts = [
-      Product(
-        id: '1',
-        title: 'Nike Air Max 270',
-        price: 149.99,
-        image: 'https://raw.githubusercontent.com/flutter/assets-for-api-docs/master/assets/shoes.jpg',
-        category: 'Shoes',
-        colors: ['Black', 'White', 'Red'],
-        description: 'Iconic Nike Air cushioning and modern design for all-day comfort',
-        brand: 'Nike',
-        material: 'Mesh & Synthetic',
-      ),
-      Product(
-        id: '2',
-        title: 'Apple AirPods Pro',
-        price: 249.99,
-        image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83?wid=572&hei=572&fmt=jpeg',
-        category: 'Electronics',
-        colors: ['White'],
-        description: 'Active noise cancellation for immersive sound',
-        brand: 'Apple',
-        material: 'Plastic',
-      ),
-      Product(
-        id: '3',
-        title: 'Samsung Galaxy Watch 5',
-        price: 279.99,
-        image: 'https://images.samsung.com/is/image/samsung/p6pim/levant/2208/gallery/levant-galaxy-watch5-40mm-431107-sm-r900nzaamea-533187365',
-        category: 'Wearables',
-        colors: ['Black', 'Silver'],
-        description: 'Advanced health monitoring and fitness tracking',
-        brand: 'Samsung',
-        material: 'Aluminum',
-      ),
-    ];
-
-    for (var product in dummyProducts) {
-      addToCart(product);
-    }
   }
 } 

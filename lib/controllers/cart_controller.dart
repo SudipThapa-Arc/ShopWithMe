@@ -171,6 +171,8 @@ class CartController extends GetxController {
     cartItems.removeAt(index);
     _updateTotal();
   }
+
+  void addDummyItems() {}
 }
 
 class CartItem {
