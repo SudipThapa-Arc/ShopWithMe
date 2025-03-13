@@ -1,334 +1,535 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shopwithme/constants/consts.dart';
 import 'package:shopwithme/constants/common_lists.dart';
 import 'package:shopwithme/design_system/spacing.dart';
 import 'package:shopwithme/design_system/inputs.dart';
 import 'package:shopwithme/design_system/typography.dart';
 import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/borders.dart';
+import 'package:shopwithme/design_system/elevation.dart';
+import 'package:shopwithme/common_widgets/product_card.dart';
+import 'package:shopwithme/common_widgets/shimmer_loading.dart';
+import 'package:shopwithme/common_widgets/product_grid_shimmer.dart';
+import 'package:shopwithme/controllers/product_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  // Responsive breakpoints
+  static const double _tabletBreakpoint = 768;
+  static const double _desktopBreakpoint = 1024;
+
+  // Responsive helpers
+  bool _isMobile(double width) => width < _tabletBreakpoint;
+  bool _isTablet(double width) => width >= _tabletBreakpoint && width < _desktopBreakpoint;
+  bool _isDesktop(double width) => width >= _desktopBreakpoint;
+
+  // Get number of grid columns based on screen width
+  int _getGridColumns(double width) {
+    if (_isDesktop(width)) return 4;
+    if (_isTablet(width)) return 3;
+    return 2;
+  }
+
+  // Get category grid columns based on screen width
+  int _getCategoryColumns(double width) {
+    if (_isDesktop(width)) return 8;
+    if (_isTablet(width)) return 6;
+    return 4;
+  }
+
+  // Get product card width based on screen width
+  double _getProductCardWidth(double width) {
+    if (_isDesktop(width)) return 220;
+    if (_isTablet(width)) return 200;
+    return 180;
+  }
+
+  // Get banner aspect ratio based on screen width
+  double _getBannerAspectRatio(double width) {
+    if (_isDesktop(width)) return 21 / 9;
+    if (_isTablet(width)) return 16 / 9;
+    return 4 / 3;
+  }
+
+  // Get max content width based on screen width
+  double _getMaxContentWidth(double width) {
+    if (_isDesktop(width)) return 1200;
+    if (_isTablet(width)) return 768;
+    return width;
+  }
+
+  // Get product name max lines based on screen width
+  int _getProductNameMaxLines(double width) {
+    if (_isDesktop(width)) return 2;
+    if (_isTablet(width)) return 2;
+    return 1;
+  }
+
+  // Get product card height based on screen width
+  double _getProductCardHeight(double width) {
+    if (_isDesktop(width)) return 320;
+    if (_isTablet(width)) return 300;
+    return 260;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.background,
-      width: context.screenWidth,
-      height: context.screenHeight,
-      child: SafeArea(
-        child: Column(
-          children: [
-            // Search Bar with improved design
-            Padding(
-              padding: const EdgeInsets.all(Spacing.md),
-              child: AppInput(
-                hint: searchhint,
-                prefixIcon: Icons.search,
-                suffixIcon: Icons.filter_list,
-                onSuffixIconPressed: () {
-                  // Handle filter
-                },
-              ),
-            ),
+    final productController = Get.put(ProductController());
+    final screenWidth = MediaQuery.of(context).size.width;
+    final productCardWidth = _getProductCardWidth(screenWidth);
+    final productCardHeight = _getProductCardHeight(screenWidth);
+    final productNameMaxLines = _getProductNameMaxLines(screenWidth);
+    final bannerAspectRatio = _getBannerAspectRatio(screenWidth);
+    final gridColumns = _getGridColumns(screenWidth);
+    final categoryColumns = _getCategoryColumns(screenWidth);
+    final horizontalPadding = _isMobile(screenWidth) ? Spacing.md : Spacing.lg;
+    final maxContentWidth = _getMaxContentWidth(screenWidth);
 
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    // Main Banner Slider
-                    VxSwiper.builder(
-                      enlargeCenterPage: true,
-                      aspectRatio: 16 / 9,
-                      autoPlay: true,
-                      height: 180,
-                      itemCount: brandList.length,
-                      itemBuilder: (context, index) {
-                        return Image.asset(
-                          brandList[index],
-                          fit: BoxFit.cover,
-                        ).box
-                            .rounded
-                            .clip(Clip.antiAlias)
-                            .margin(const EdgeInsets.symmetric(horizontal: 8))
-                            .make();
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: maxContentWidth),
+            child: Column(
+              children: [
+                // Search Bar with improved design
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: horizontalPadding,
+                    vertical: Spacing.md,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 600),
+                    child: AppInput(
+                      hint: searchhint,
+                      prefixIcon: Icons.search,
+                      suffixIcon: Icons.filter_list,
+                      onSuffixIconPressed: () {
+                        // Handle filter
                       },
                     ),
+                  ),
+                ),
 
-                    SizedBox(height: Spacing.lg),
-                    
-                    // Categories Section
-                    Padding(
-                      padding: const EdgeInsets.all(Spacing.md),
+                // Main Content
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await productController.fetchCategories();
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Categories",
-                            style: AppTypography.titleLarge,
-                          ),
-                          SizedBox(height: Spacing.sm),
-                          GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              childAspectRatio: 0.8,
+                          // Main Banner Slider
+                          AspectRatio(
+                            aspectRatio: bannerAspectRatio,
+                            child: VxSwiper.builder(
+                              enlargeCenterPage: true,
+                              autoPlay: true,
+                              viewportFraction: _isMobile(screenWidth) ? 0.9 : 0.8,
+                              aspectRatio: bannerAspectRatio,
+                              itemCount: brandList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: Spacing.sm,
+                                    vertical: Spacing.xs,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: AppBorders.roundedMd,
+                                    boxShadow: Elevation.low,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: AppBorders.roundedMd,
+                                    child: Image.asset(
+                                      brandList[index],
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: AppColors.surface,
+                                          child: const Center(
+                                            child: Icon(Icons.error_outline),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            itemCount: 8,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                    children: [
-                                  Image.asset(
-                                    categoryImages[index],
-                                    height: 50,
-                                    width: 50,
-                                  ).box.roundedFull.clip(Clip.antiAlias).make(),
-                                  5.heightBox,
-                                  categoryNames[index].text.size(12).make(),
-                                ],
-                              ).box
-                                  .white
-                                  .rounded
-                                  .padding(const EdgeInsets.all(8))
-                                  .make();
-                            },
                           ),
-                        ],
-                      ),
-                    ),
 
-                    SizedBox(height: Spacing.lg),
-
-                    // Featured Products Section
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: whiteColor,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          featuredProducts.text
-                              .size(20)
-                                  .bold
-                                  .color(darkFontGrey)
-                              .make(),
-                              "View All"
-                                  .text
-                                  .color(redColor)
-                                  .make()
-                                  .onTap(() {
-                                    // Handle view all
-                                  }),
-                            ],
+                          SizedBox(height: Spacing.lg),
+                          
+                          // Categories Section
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Categories",
+                                  style: AppTypography.titleLarge,
+                                ),
+                                SizedBox(height: Spacing.sm),
+                                LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    final itemWidth = (constraints.maxWidth - ((categoryColumns - 1) * Spacing.sm)) / categoryColumns;
+                                    final itemHeight = itemWidth * 1.2;
+                                    return GridView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: categoryColumns,
+                                        mainAxisSpacing: Spacing.sm,
+                                        crossAxisSpacing: Spacing.sm,
+                                        childAspectRatio: itemWidth / itemHeight,
+                                      ),
+                                      itemCount: 8,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.surface,
+                                            borderRadius: AppBorders.roundedMd,
+                                            boxShadow: Elevation.low,
+                                          ),
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              onTap: () {
+                                                productController.setCurrentCategory(categoryNames[index]);
+                                                // Navigate to category screen
+                                              },
+                                              borderRadius: AppBorders.roundedMd,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(_isMobile(screenWidth) ? Spacing.xs : Spacing.sm),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Image.asset(
+                                                      categoryImages[index],
+                                                      height: itemWidth * 0.5,
+                                                      width: itemWidth * 0.5,
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                    SizedBox(height: _isMobile(screenWidth) ? Spacing.xs : Spacing.sm),
+                                                    Flexible(
+                                                      child: Text(
+                                                        categoryNames[index],
+                                                        style: _isMobile(screenWidth) 
+                                                          ? AppTypography.labelSmall 
+                                                          : AppTypography.labelLarge,
+                                                        textAlign: TextAlign.center,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          10.heightBox,
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                6,
-                                (index) => Container(
-                                  width: 150,
-                                  margin: const EdgeInsets.only(right: 10),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                          SizedBox(height: Spacing.lg),
+
+                          // Featured Products Section
+                          Container(
+                            width: double.infinity,
+                            color: AppColors.surface,
+                            child: Padding(
+                              padding: EdgeInsets.all(horizontalPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Image.asset(
-                                        imgP1,
-                                        height: 150,
-                                        width: 150,
-                                        fit: BoxFit.cover,
-                                      ).box.rounded.clip(Clip.antiAlias).make(),
-                                      10.heightBox,
-                                      "Laptop 16/256GB"
-                                          .text
-                                          .semiBold
-                                          .size(14)
-                                          .color(darkFontGrey)
-                                          .make(),
-                                      5.heightBox,
-                                      "\$1200"
-                                          .text
-                                          .bold
-                                          .color(redColor)
-                                          .size(16)
-                                          .make(),
+                                      Expanded(
+                                        child: Text(
+                                          featuredProducts,
+                                          style: AppTypography.titleLarge,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          // Navigate to all products
+                                        },
+                                        child: Text(
+                                          "View All",
+                                          style: AppTypography.labelLarge.copyWith(
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
+                                  SizedBox(height: Spacing.md),
+                                  SizedBox(
+                                    height: productCardHeight,
+                                    child: Obx(() {
+                                      if (productController.isLoading.value) {
+                                        return ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: 3,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                right: Spacing.md,
+                                                left: index == 0 ? Spacing.xs : 0,
+                                              ),
+                                              child: SizedBox(
+                                                width: productCardWidth,
+                                                child: const ProductGridItemShimmer(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+
+                                      final products = productController.categoryProducts['Electronics'] ?? [];
+                                      if (products.isEmpty) {
+                                        return Center(
+                                          child: Text(
+                                            'No products available',
+                                            style: AppTypography.bodyLarge,
+                                          ),
+                                        );
+                                      }
+
+                                      return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.take(6).length,
+                                        itemBuilder: (context, index) {
+                                          final product = products[index];
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              right: Spacing.md,
+                                              left: index == 0 ? Spacing.xs : 0,
+                                            ),
+                                            child: SizedBox(
+                                              width: productCardWidth,
+                                              child: ProductCard(
+                                                product: product,
+                                                maxLines: productNameMaxLines,
+                                                onTap: () {
+                                                  productController.setCurrentProduct(
+                                                    product,
+                                                    title: product.title,
+                                                    price: product.price,
+                                                  );
+                                                  // Navigate to product detail
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
 
-                    SizedBox(height: Spacing.lg),
+                          SizedBox(height: Spacing.lg),
 
-                    // Flash Sale Section
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: const BoxDecoration(color: redColor),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              "Flash Sale"
-                                  .text
-                                  .white
-                                  .bold
-                                  .size(20)
-                                  .make(),
-                              Row(
+                          // Flash Sale Section
+                          Container(
+                            width: double.infinity,
+                            color: AppColors.primary,
+                            child: Padding(
+                              padding: EdgeInsets.all(horizontalPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  "Ends in: ".text.white.make(),
-                                  "02:45:30"
-                                      .text
-                                      .white
-                                      .bold
-                                      .make(),
-                                ],
-                              ),
-                            ],
-                          ),
-                          10.heightBox,
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                6,
-                                (index) => Container(
-                                  width: 150,
-                                  margin: const EdgeInsets.only(right: 10),
-                                  color: whiteColor,
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Image.asset(
-                                        imgP3,
-                      height: 150,
-                                        width: 150,
-                                        fit: BoxFit.cover,
+                                      Expanded(
+                                        child: Text(
+                                          "Flash Sale",
+                                          style: AppTypography.titleLarge.copyWith(
+                                            color: AppColors.onPrimary,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                      10.heightBox,
-                                      "Product Name"
-                                          .text
-                                          .semiBold
-                                          .make(),
-                                      5.heightBox,
                                       Row(
                                         children: [
-                                          "\$999"
-                                              .text
-                                              .bold
-                                              .color(redColor)
-                                              .size(16)
-                                              .make(),
-                                          10.widthBox,
-                                          "\$1299"
-                                              .text
-                                              .lineThrough
-                                              .gray500
-                                              .make(),
+                                          Text(
+                                            "Ends in: ",
+                                            style: AppTypography.bodyMedium.copyWith(
+                                              color: AppColors.onPrimary,
+                                            ),
+                                          ),
+                                          Text(
+                                            "02:45:30",
+                                            style: AppTypography.titleLarge.copyWith(
+                                              color: AppColors.onPrimary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      "Save 23%"
-                                          .text
-                                          .white
-                                          .semiBold
-                                          .make()
-                                          .box
-                                          .color(redColor)
-                                          .padding(const EdgeInsets.symmetric(horizontal: 8, vertical: 4))
-                                          .roundedSM
-                                          .make(),
                                     ],
                                   ),
-                                ).box.rounded.clip(Clip.antiAlias).make(),
+                                  SizedBox(height: Spacing.md),
+                                  SizedBox(
+                                    height: productCardHeight,
+                                    child: Obx(() {
+                                      if (productController.isLoading.value) {
+                                        return ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: 3,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: EdgeInsets.only(
+                                                right: Spacing.md,
+                                                left: index == 0 ? Spacing.xs : 0,
+                                              ),
+                                              child: SizedBox(
+                                                width: productCardWidth,
+                                                child: const ProductGridItemShimmer(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+
+                                      final products = productController.categoryProducts['Women Clothing'] ?? [];
+                                      if (products.isEmpty) {
+                                        return Center(
+                                          child: Text(
+                                            'No products available',
+                                            style: AppTypography.bodyLarge.copyWith(
+                                              color: AppColors.onPrimary,
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      return ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: products.take(6).length,
+                                        itemBuilder: (context, index) {
+                                          final product = products[index];
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                              right: Spacing.md,
+                                              left: index == 0 ? Spacing.xs : 0,
+                                            ),
+                                            child: SizedBox(
+                                              width: productCardWidth,
+                                              child: ProductCard(
+                                                product: product,
+                                                maxLines: productNameMaxLines,
+                                                onTap: () {
+                                                  productController.setCurrentProduct(
+                                                    product,
+                                                    title: product.title,
+                                                    price: product.price,
+                                                  );
+                                                  // Navigate to product detail
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
 
-                    SizedBox(height: Spacing.lg),
+                          SizedBox(height: Spacing.lg),
 
-                    // Grid Products
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          "Popular Products"
-                              .text
-                              .size(20)
-                              .bold
-                              .make(),
-                          10.heightBox,
-                    GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
-                              mainAxisExtent: 250,
-                      ),
-                            itemCount: 4,
-                      itemBuilder: (context, index) {
-                              return Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: whiteColor,
-                                  borderRadius: BorderRadius.circular(10),
+                          // Popular Products Grid
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Popular Products",
+                                  style: AppTypography.titleLarge,
                                 ),
-                                child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                                    Image.asset(
-                                      imgP3,
-                                      height: 150,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ).box.rounded.clip(Clip.antiAlias).make(),
-                                    10.heightBox,
-                                    "Product Name".text.semiBold.make(),
-                                    5.heightBox,
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        "\$1200".text.bold.color(redColor).size(16).make(),
-                                        const Icon(
-                                          Icons.favorite_border,
-                                          color: darkFontGrey,
+                                SizedBox(height: Spacing.md),
+                                Obx(() {
+                                  if (productController.isLoading.value) {
+                                    return const ProductGridShimmer();
+                                  }
+
+                                  final products = productController.categoryProducts['Men Clothing'] ?? [];
+                                  if (products.isEmpty) {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(Spacing.lg),
+                                        child: Text(
+                                          'No products available',
+                                          style: AppTypography.bodyLarge,
                                         ),
-                                      ],
+                                      ),
+                                    );
+                                  }
+
+                                  return GridView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: gridColumns,
+                                      mainAxisSpacing: Spacing.md,
+                                      crossAxisSpacing: Spacing.md,
+                                      childAspectRatio: productCardWidth / productCardHeight,
                                     ),
-                                  ],
-                                ),
-                              );
-                            },
+                                    itemCount: products.take(gridColumns * 2).length,
+                                    itemBuilder: (context, index) {
+                                      final product = products[index];
+                                      return ProductCard(
+                                        product: product,
+                                        maxLines: productNameMaxLines,
+                                        onTap: () {
+                                          productController.setCurrentProduct(
+                                            product,
+                                            title: product.title,
+                                            price: product.price,
+                                          );
+                                          // Navigate to product detail
+                                        },
+                                      );
+                                    },
+                                  );
+                                }),
+                              ],
+                            ),
                           ),
+                          // Add bottom padding for better scroll experience
+                          SizedBox(height: Spacing.lg),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

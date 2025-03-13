@@ -172,7 +172,81 @@ class CartController extends GetxController {
     _updateTotal();
   }
 
-  void addDummyItems() {}
+  void addDummyItems() {
+    // Clear existing items first to avoid duplicates
+    cartItems.clear();
+    
+    // Add Apple Watch
+    cartItems.add(CartItem(
+      product: Product(
+        id: '1',
+        title: 'Apple Watch',
+        price: 600.00,
+        image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MKU93_VW_34FR+watch-45-alum-purple-nc-8s_VW_34FR_WF_CO_GEO_US?wid=1400&hei=1400',
+        category: 'Electronics',
+        colors: ['Purple', 'Black', 'Silver'],
+        description: 'Latest Apple Watch with health tracking features',
+        brand: 'Apple',
+        material: 'Aluminum',
+        features: ['Heart Rate Monitor', 'GPS', 'Water Resistant'],
+      ),
+      quantity: 1
+    ));
+    
+    // Add Modern Chair
+    cartItems.add(CartItem(
+      product: Product(
+        id: '2',
+        title: 'Modern Chair',
+        price: 500.00,
+        image: 'https://www.ikea.com/us/en/images/products/fanbyn-chair-light-blue__0587388_pe672793_s5.jpg',
+        category: 'Furniture',
+        colors: ['Light Blue', 'Gray', 'White'],
+        description: 'Comfortable modern chair with elegant design',
+        brand: 'Modern Home',
+        material: 'Wood and Fabric',
+        features: ['Ergonomic', 'Easy to Clean', 'Durable'],
+      ),
+      quantity: 1
+    ));
+    
+    // Add Beats Headset
+    cartItems.add(CartItem(
+      product: Product(
+        id: '3',
+        title: 'Beats Headset',
+        price: 220.00,
+        image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQPJ3?wid=572&hei=572&fmt=jpeg',
+        category: 'Electronics',
+        colors: ['Purple', 'Black', 'Red'],
+        description: 'Premium wireless headphones with noise cancellation',
+        brand: 'Beats',
+        material: 'Plastic and Leather',
+        features: ['Noise Cancellation', 'Wireless', 'Long Battery Life'],
+      ),
+      quantity: 2
+    ));
+    
+    // Add Blue Shoes
+    cartItems.add(CartItem(
+      product: Product(
+        id: '4',
+        title: 'Blue Shoes',
+        price: 99.00,
+        image: 'https://assets.adidas.com/images/w_600,f_auto,q_auto/57d461193168475e8eecaef800f45e2e_9366/Ultraboost_5.0_DNA_Shoes_Blue_GV8747_01_standard.jpg',
+        category: 'Footwear',
+        colors: ['Blue', 'Black', 'White'],
+        description: 'Comfortable running shoes with modern design',
+        brand: 'SportBrand',
+        material: 'Synthetic and Mesh',
+        features: ['Breathable', 'Lightweight', 'Cushioned'],
+      ),
+      quantity: 3
+    ));
+    
+    // Update total
+    _updateTotal();
+  }
 }
 
 class CartItem {

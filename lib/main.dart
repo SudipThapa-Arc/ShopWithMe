@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopwithme/views/splashscreen/splashscreen.dart';
 import 'package:shopwithme/controllers/auth_controller.dart';
+import 'package:shopwithme/controllers/cart_controller.dart';
+import 'package:shopwithme/controllers/home_controller.dart';
 import 'package:shopwithme/common_widgets/error_widgets.dart' as app_errors;
 import 'firebase_options.dart';
 import 'package:shopwithme/design_system/theme.dart';
@@ -16,6 +18,8 @@ void main() async {
     );
     
     Get.put(AuthController());
+    Get.put(CartController());
+    Get.put(HomeController());
     
     // Uncomment this line to force logout for testing
     // await authController.forceLogout();

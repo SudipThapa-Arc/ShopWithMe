@@ -532,8 +532,25 @@ class _ItemDetailsState extends State<ItemDetails> with SingleTickerProviderStat
                     Expanded(
                       child: AnimatedButton(
                         onPressed: () {
+                          // Add to cart
                           controller.addToCart(product);
-                                                },
+                          
+                          // Show success snackbar
+                          Get.snackbar(
+                            'Success',
+                            'Item added to cart successfully!',
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: AppColors.success,
+                            colorText: Colors.white,
+                            duration: const Duration(seconds: 2),
+                          );
+
+                          // Vibrate device
+                          HapticFeedback.mediumImpact();
+
+                          // Update cart badge
+                          controller.updateCartTotal();
+                        },
                         color: AppColors.primary,
                         textColor: AppColors.onPrimary,
                         borderRadius: 8,

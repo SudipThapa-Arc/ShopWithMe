@@ -13,6 +13,10 @@ import 'package:shopwithme/design_system/typography.dart';
 import 'package:shopwithme/design_system/spacing.dart';
 import 'package:shopwithme/design_system/buttons.dart';
 import 'package:shopwithme/design_system/cards.dart';
+import 'package:shopwithme/views/profile_screen/orders_screen.dart';
+import 'package:shopwithme/views/profile_screen/wishlist_screen.dart';
+import 'package:shopwithme/views/profile_screen/addresses_screen.dart';
+import 'package:shopwithme/views/profile_screen/payment_methods_screen.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -282,7 +286,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: 'My Orders',
                     subtitle: 'View and track orders',
                     onTap: () {
-                      // Navigate to orders
+                      Get.to(
+                        () => const OrdersScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                   _buildSettingsItem(
@@ -290,7 +298,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: 'Wishlist',
                     subtitle: 'Your favorite items',
                     onTap: () {
-                      // Navigate to wishlist
+                      Get.to(
+                        () => const WishlistScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                   _buildSettingsItem(
@@ -298,7 +310,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: 'Addresses',
                     subtitle: 'Manage delivery addresses',
                     onTap: () {
-                      // Navigate to addresses
+                      Get.to(
+                        () => const AddressesScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                   _buildSettingsItem(
@@ -306,7 +322,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     title: 'Payment Methods',
                     subtitle: 'Manage payment options',
                     onTap: () {
-                      // Navigate to payment methods
+                      Get.to(
+                        () => const PaymentMethodsScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                 ],

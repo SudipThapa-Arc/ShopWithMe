@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopwithme/common_widgets/animated_button.dart';
 import 'package:shopwithme/common_widgets/loading_indicator.dart';
-import 'package:shopwithme/design_system/buttons.dart';
 import 'package:shopwithme/design_system/colors.dart';
 import 'package:shopwithme/design_system/spacing.dart';
 import 'package:shopwithme/design_system/typography.dart';
 import 'package:shopwithme/controllers/cart_controller.dart';
-import 'package:shopwithme/common_widgets/navigation/bottom_nav.dart';
+import 'package:shopwithme/controllers/home_controller.dart';
 
 import '../../common_widgets/error_widgets.dart';
-import '../../common_widgets/shimmer_loading.dart';
 
 
 class CartScreen extends StatelessWidget {
@@ -19,321 +17,210 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CartController controller = Get.find<CartController>();
+    final HomeController homeController = Get.find<HomeController>();
     
-    // Add dummy items for demo
-    if (controller.cartItems.isEmpty) {
-      controller.addDummyItems();
-    }
+    // Always add dummy items for demo
+    controller.addDummyItems();
     
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        title: Text(
-          'Shopping Cart',
-          style: AppTypography.titleLarge.copyWith(
-            color: AppColors.textPrimary,
-          ),
+        leading: AnimatedIconButton(
+          icon: Icons.arrow_back,
+          color: AppColors.textPrimary,
+          onPressed: () => Get.back(),
         ),
+        title: Text(
+          'Cart',
+          style: AppTypography.titleLarge,
+        ),
+        centerTitle: true,
         actions: [
-          if (controller.cartItems.isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.delete_outline),
-              color: AppColors.error,
-              tooltip: 'Clear Cart',
-              onPressed: () {
-                Get.defaultDialog(
-                  title: 'Clear Cart',
-                  titleStyle: AppTypography.titleLarge,
-                  middleText: 'Are you sure you want to clear your cart?',
-                  middleTextStyle: AppTypography.bodyLarge,
-                  backgroundColor: AppColors.surface,
-                  radius: 12,
-                  confirm: AppButton(
-                    text: 'Clear',
-                    onPressed: () {
-                      controller.clearCart();
-                      Get.back();
-                    },
-                    type: ButtonType.error,
-                  ),
-                  cancel: AppButton(
-                    text: 'Cancel',
-                    onPressed: () => Get.back(),
-                    type: ButtonType.outline,
-                  ),
-                );
-              },
-            ),
+          AnimatedIconButton(
+            icon: Icons.delete_outline,
+            color: AppColors.textPrimary,
+            onPressed: () => controller.clearCart(),
+          ),
         ],
       ),
       body: Obx(() {
         // Show loading state
         if (controller.isLoading.value) {
-          return ListView.builder(
-            padding: EdgeInsets.all(Spacing.md),
-            itemCount: 3,
-            itemBuilder: (context, index) => CartItemShimmer(),
+          return const Center(
+            child: LoadingIndicator(
+              size: 48,
+              color: AppColors.primary,
+            ),
           );
         }
         
         // Show empty state
         if (controller.cartItems.isEmpty) {
           return EmptyStateWidget.cart(
-            onAction: () => Get.back(),
+            onAction: () {
+              homeController.currentIndex.value = 0; // Switch to home tab
+            },
           );
         }
         
         // Show cart items
-        return Stack(
+        return Column(
           children: [
-            // Cart Items List
-            ListView.separated(
-              padding: EdgeInsets.fromLTRB(
-                Spacing.md,
-                Spacing.md,
-                Spacing.md,
-                100, // Space for checkout button
-              ),
-              itemCount: controller.cartItems.length,
-              separatorBuilder: (context, index) => SizedBox(height: Spacing.md),
-              itemBuilder: (context, index) {
-                final item = controller.cartItems[index];
-                final isAnimating = controller.animatingItemId.value == item.product.id;
-                
-                return AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  transform: Matrix4.identity()
-                    ..scale(isAnimating ? 1.02 : 1.0),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: Spacing.sm,
-                      vertical: Spacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.shadow.withOpacity(0.08),
-                          blurRadius: 8,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                  child: Row(
-                    children: [
-                        // Product Image with shimmer loading
-                        Hero(
-                          tag: 'product_${item.product.id}_image',
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              bottomLeft: Radius.circular(16),
-                            ),
-                            child: Image.network(
-                              item.product.image,
-                              width: 120,
-                              height: 120,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return ShimmerLoading.circular(
-                                  width: 120,
-                                  height: 120,
-                                  shapeBorder: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  width: 120,
-                                  height: 120,
-                                  color: AppColors.background,
-                                  child: Icon(
-                                    Icons.image_not_supported_outlined,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                );
-                              },
-                            ),
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.all(Spacing.md),
+                itemCount: controller.cartItems.length,
+                separatorBuilder: (context, index) => Divider(
+                  height: Spacing.md,
+                  color: AppColors.border,
+                ),
+                itemBuilder: (context, index) {
+                  final item = controller.cartItems[index];
+                  
+                  return Container(
+                    padding: EdgeInsets.symmetric(vertical: Spacing.sm),
+                    child: Row(
+                      children: [
+                        // Product Image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(Spacing.xs),
+                          child: Image.network(
+                            item.product.image,
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 60,
+                                height: 60,
+                                color: AppColors.background,
+                                child: Icon(
+                                  Icons.image_not_supported_outlined,
+                                  color: AppColors.textSecondary,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         SizedBox(width: Spacing.md),
                         
                         // Product Details
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(Spacing.md),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                                Text(
-                                  item.product.title,
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                              Text(
+                                item.product.title,
+                                style: AppTypography.labelLarge,
+                              ),
+                              SizedBox(height: Spacing.xs),
+                              Text(
+                                '\$${item.product.price.toStringAsFixed(2)}',
+                                style: AppTypography.titleLarge.copyWith(
+                                  color: AppColors.primary,
                                 ),
-                                SizedBox(height: Spacing.xs),
-                                Text(
-                                  '\$${item.product.price.toStringAsFixed(2)}',
-                                  style: AppTypography.titleLarge.copyWith(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: Spacing.sm),
-                                
-                                // Quantity controls with improved UI
-                              Row(
-                                children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColors.background,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          AnimatedIconButton(
-                                            icon: Icons.remove_rounded,
-                                            onPressed: () => controller.decrementQuantity(index),
-                                            color: AppColors.textPrimary,
-                                            size: 32,
-                                          ),
-                                          Container(
-                                            width: 40,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              '${item.quantity}',
-                                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          AnimatedIconButton(
-                                            icon: Icons.add_rounded,
-                                            onPressed: () => controller.incrementQuantity(index),
-                                            color: AppColors.primary,
-                                            size: 32,
-                                          ),
-                                        ],
-                                    ),
-                                  ),
-                                  
-                                  Spacer(),
-                                  
-                                    // Delete button with tooltip
-                                    Tooltip(
-                                      message: 'Remove item',
-                                      child: AnimatedIconButton(
-                                    icon: Icons.delete_outline_rounded,
-                                    onPressed: () => controller.removeItem(index),
-                                    color: AppColors.error,
-                                        size: 28,
-                                      ),
-                                  ),
-                                ],
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                        
+                        // Quantity Controls
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.background,
+                            borderRadius: BorderRadius.circular(Spacing.xl),
+                          ),
+                          child: Row(
+                            children: [
+                              AnimatedIconButton(
+                                icon: Icons.remove,
+                                color: AppColors.textPrimary,
+                                size: 20,
+                                onPressed: () => controller.decrementQuantity(index),
+                              ),
+                              Container(
+                                width: 28,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${item.quantity}',
+                                  style: AppTypography.labelLarge,
+                                ),
+                              ),
+                              AnimatedIconButton(
+                                icon: Icons.add,
+                                color: AppColors.primary,
+                                size: 20,
+                                onPressed: () => controller.incrementQuantity(index),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-
+            
             // Checkout Section
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                padding: EdgeInsets.all(Spacing.lg),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(24),
+            Container(
+              padding: EdgeInsets.all(Spacing.md),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadow.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadow.withOpacity(0.12),
-                      blurRadius: 12,
-                      offset: const Offset(0, -4),
+                ],
+              ),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    // Subtotal
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Subtotal:',
+                          style: AppTypography.bodyLarge.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        Text(
+                          '\$${controller.totalAmount.toStringAsFixed(2)}',
+                          style: AppTypography.headlineMedium.copyWith(
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: Spacing.md),
+                    
+                    // Checkout Button
+                    LoadingButton(
+                      isLoading: controller.isLoading.value,
+                      onPressed: () => controller.proceedToCheckout(),
+                      height: Spacing.buttonHeight,
+                      borderRadius: Spacing.sm,
+                      color: AppColors.primary,
+                      child: Text(
+                        'Check Out',
+                        style: AppTypography.labelLarge.copyWith(
+                          color: AppColors.onPrimary,
+                        ),
+                      ),
                     ),
                   ],
-                ),
-                child: SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                            'Total Amount',
-                            style: AppTypography.titleLarge.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          Text(
-                            '\$${controller.totalAmount.toStringAsFixed(2)}',
-                            style: AppTypography.headlineMedium.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                      ),
-                      SizedBox(height: Spacing.lg),
-                      LoadingButton(
-                        isLoading: controller.isLoading.value,
-                        onPressed: () => controller.proceedToCheckout(),
-                        height: 56,
-                        borderRadius: 16,
-                        gradient: LinearGradient(
-                          colors: [AppColors.primary, AppColors.primaryDark],
-                        ),
-                        child: Text(
-                          'Proceed to Checkout',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: AppColors.surface,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
           ],
         );
       }),
-      bottomNavigationBar: AppBottomNav(
-        currentIndex: 2, // Cart tab index
-        onTap: (index) {
-          // Handle navigation
-          switch (index) {
-            case 0:
-              Get.offAllNamed('/home');
-              break;
-            case 1:
-              Get.offAllNamed('/search');
-              break;
-            case 3:
-              Get.offAllNamed('/wishlist');
-              break;
-            case 4:
-              Get.offAllNamed('/profile');
-              break;
-          }
-        },
-      ),
     );
   }
 } 

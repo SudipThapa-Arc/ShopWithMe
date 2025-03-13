@@ -16,7 +16,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(HomeController());
+    var controller = Get.find<HomeController>();
     var navBarItems = [
       BottomNavigationBarItem(
           icon: Image.asset(

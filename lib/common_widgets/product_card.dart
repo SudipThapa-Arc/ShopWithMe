@@ -9,12 +9,14 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
   final bool showQuickView;
+  final int maxLines;
 
   const ProductCard({
     super.key,
     required this.product,
     this.onTap,
     this.showQuickView = true,
+    this.maxLines = 2,
   });
 
   @override
@@ -116,7 +118,7 @@ class ProductCard extends StatelessWidget {
                     Text(
                       product.title,
                       style: Theme.of(context).textTheme.titleMedium,
-                      maxLines: 2,
+                      maxLines: maxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: Spacing.xs),
