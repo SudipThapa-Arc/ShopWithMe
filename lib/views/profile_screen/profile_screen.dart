@@ -17,6 +17,8 @@ import 'package:shopwithme/views/profile_screen/orders_screen.dart';
 import 'package:shopwithme/views/profile_screen/wishlist_screen.dart';
 import 'package:shopwithme/views/profile_screen/addresses_screen.dart';
 import 'package:shopwithme/views/profile_screen/payment_methods_screen.dart';
+import 'package:shopwithme/views/profile_screen/help_support_screen.dart';
+import 'package:shopwithme/views/profile_screen/privacy_policy_screen.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -338,19 +340,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // Support Section
             AppCard(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: Spacing.md,
+                      top: Spacing.md,
+                      bottom: Spacing.sm,
+                    ),
+                    child: Text(
+                      'Support',
+                      style: AppTypography.titleLarge,
+                    ),
+                  ),
                   _buildSettingsItem(
                     icon: Icons.help_outline,
                     title: 'Help & Support',
+                    subtitle: 'Get help and contact support',
                     onTap: () {
-                      // Navigate to help
+                      Get.to(
+                        () => const HelpSupportScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                   _buildSettingsItem(
                     icon: Icons.privacy_tip_outlined,
                     title: 'Privacy Policy',
+                    subtitle: 'View our privacy policy',
                     onTap: () {
-                      // Navigate to privacy policy
+                      Get.to(
+                        () => const PrivacyPolicyScreen(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300),
+                      );
                     },
                   ),
                 ],
