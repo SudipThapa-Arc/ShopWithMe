@@ -12,6 +12,7 @@ import 'package:shopwithme/common_widgets/product_card.dart';
 import 'package:shopwithme/common_widgets/shimmer_loading.dart';
 import 'package:shopwithme/common_widgets/product_grid_shimmer.dart';
 import 'package:shopwithme/controllers/product_controller.dart';
+import 'package:shopwithme/views/category_screen/product_details.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -146,14 +147,32 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   child: ClipRRect(
                                     borderRadius: AppBorders.roundedMd,
-                                    child: Image.asset(
+                                    child: Image.network(
                                       brandList[index],
                                       fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return Container(
+                                          color: AppColors.surface,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress.expectedTotalBytes != null
+                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                  : null,
+                                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                       errorBuilder: (context, error, stackTrace) {
                                         return Container(
                                           color: AppColors.surface,
-                                          child: const Center(
-                                            child: Icon(Icons.error_outline),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.error_outline,
+                                              color: AppColors.error,
+                                              size: 32,
+                                            ),
                                           ),
                                         );
                                       },
@@ -211,11 +230,41 @@ class HomeScreen extends StatelessWidget {
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
-                                                    Image.asset(
+                                                    Image.network(
                                                       categoryImages[index],
                                                       height: itemWidth * 0.5,
                                                       width: itemWidth * 0.5,
-                                                      fit: BoxFit.contain,
+                                                      fit: BoxFit.cover,
+                                                      loadingBuilder: (context, child, loadingProgress) {
+                                                        if (loadingProgress == null) return child;
+                                                        return SizedBox(
+                                                          height: itemWidth * 0.5,
+                                                          width: itemWidth * 0.5,
+                                                          child: Center(
+                                                            child: CircularProgressIndicator(
+                                                              value: loadingProgress.expectedTotalBytes != null
+                                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                                  : null,
+                                                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                                                              strokeWidth: 2,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      errorBuilder: (context, error, stackTrace) {
+                                                        return Container(
+                                                          height: itemWidth * 0.5,
+                                                          width: itemWidth * 0.5,
+                                                          color: AppColors.surface,
+                                                          child: Center(
+                                                            child: Icon(
+                                                              Icons.error_outline,
+                                                              color: AppColors.error,
+                                                              size: 24,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                     SizedBox(height: _isMobile(screenWidth) ? Spacing.xs : Spacing.sm),
                                                     Flexible(
@@ -332,7 +381,16 @@ class HomeScreen extends StatelessWidget {
                                                     title: product.title,
                                                     price: product.price,
                                                   );
-                                                  // Navigate to product detail
+                                                  Get.to(
+                                                    () => ItemDetails(title: product.title),
+                                                    transition: Transition.fadeIn,
+                                                    duration: const Duration(milliseconds: 300),
+                                                    curve: Curves.easeInOut,
+                                                  );
+                                                },
+                                                onAddToCart: () {
+                                                  // Add to cart logic
+                                                  productController.addToCart(product);
                                                 },
                                               ),
                                             ),
@@ -445,7 +503,16 @@ class HomeScreen extends StatelessWidget {
                                                     title: product.title,
                                                     price: product.price,
                                                   );
-                                                  // Navigate to product detail
+                                                  Get.to(
+                                                    () => ItemDetails(title: product.title),
+                                                    transition: Transition.fadeIn,
+                                                    duration: const Duration(milliseconds: 300),
+                                                    curve: Curves.easeInOut,
+                                                  );
+                                                },
+                                                onAddToCart: () {
+                                                  // Add to cart logic
+                                                  productController.addToCart(product);
                                                 },
                                               ),
                                             ),
@@ -511,7 +578,16 @@ class HomeScreen extends StatelessWidget {
                                             title: product.title,
                                             price: product.price,
                                           );
-                                          // Navigate to product detail
+                                          Get.to(
+                                            () => ItemDetails(title: product.title),
+                                            transition: Transition.fadeIn,
+                                            duration: const Duration(milliseconds: 300),
+                                            curve: Curves.easeInOut,
+                                          );
+                                        },
+                                        onAddToCart: () {
+                                          // Add to cart logic
+                                          productController.addToCart(product);
                                         },
                                       );
                                     },

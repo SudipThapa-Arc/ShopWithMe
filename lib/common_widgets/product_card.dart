@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopwithme/design_system/colors.dart';
+import 'package:shopwithme/design_system/elevation.dart';
 import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/borders.dart';
 import 'package:shopwithme/models/product_model.dart';
 import 'package:shopwithme/controllers/product_controller.dart';
+import 'package:shopwithme/common_widgets/quick_view_modal.dart';
+import 'package:shopwithme/design_system/typography.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
-  final bool showQuickView;
   final int maxLines;
+  final VoidCallback? onAddToCart;
 
   const ProductCard({
     super.key,
     required this.product,
     this.onTap,
-    this.showQuickView = true,
     this.maxLines = 2,
+    this.onAddToCart,
   });
+
+  void _showQuickView(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => QuickViewModal(
+        product: product,
+        onAddToCart: onAddToCart,
+        onViewDetails: onTap,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +43,16 @@ class ProductCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        borderRadius: AppBorders.roundedMd,
+        boxShadow: Elevation.low,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          onLongPress: () => _showQuickView(context),
+          onDoubleTap: () => _showQuickView(context),
+          borderRadius: AppBorders.roundedMd,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,12 +60,12 @@ class ProductCard extends StatelessWidget {
               Stack(
                 children: [
                   Hero(
-                    tag: 'product_${product.id}_image',
+                    tag: 'product_${product.id}',
                     child: Container(
                       height: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12),
+                          top: Radius.circular(AppBorders.radiusMd),
                         ),
                         image: DecorationImage(
                           image: NetworkImage(product.image),
@@ -61,27 +74,24 @@ class ProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (showQuickView)
+                  if (onTap != null)
                     Positioned.fill(
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {
-                            // Show quick view modal
-                            _showQuickView(context);
-                          },
+                          onTap: onTap,
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(12),
+                                top: Radius.circular(AppBorders.radiusMd),
                               ),
-                              color: Colors.black.withOpacity(0.3),
+                              color: AppColors.secondary.withOpacity(0.3),
                             ),
                             child: Center(
                               child: Text(
                                 'Quick View',
-                                style: TextStyle(
-                                  color: Colors.white,
+                                style: AppTypography.labelLarge.copyWith(
+                                  color: AppColors.onSecondary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -101,7 +111,7 @@ class ProductCard extends StatelessWidget {
                             : Icons.favorite_border,
                         color: controller.isFavorite(int.parse(product.id))
                             ? AppColors.error
-                            : Colors.white,
+                            : AppColors.onSecondary,
                       ),
                       onPressed: () => controller.toggleFavorite(int.parse(product.id)),
                     )),
@@ -117,14 +127,17 @@ class ProductCard extends StatelessWidget {
                   children: [
                     Text(
                       product.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: AppTypography.bodyLarge.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
                       maxLines: maxLines,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: Spacing.xs),
                     Text(
                       '\$${product.price.toStringAsFixed(2)}',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      style: AppTypography.titleLarge.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -135,18 +148,6 @@ class ProductCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showQuickView(BuildContext context) {
-    // Implement quick view modal
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        // Quick view implementation
       ),
     );
   }

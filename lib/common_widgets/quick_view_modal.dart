@@ -2,30 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopwithme/design_system/colors.dart';
 import 'package:shopwithme/design_system/spacing.dart';
+import 'package:shopwithme/design_system/typography.dart';
+import 'package:shopwithme/design_system/elevation.dart';
+import 'package:shopwithme/design_system/borders.dart';
 import 'package:shopwithme/models/product_model.dart';
 import 'package:shopwithme/controllers/product_controller.dart';
-import 'package:shopwithme/common_widgets/animated_button.dart';
+import 'package:shopwithme/common_widgets/custom_button.dart';
 
 class QuickViewModal extends StatelessWidget {
   final Product product;
+  final VoidCallback? onAddToCart;
+  final VoidCallback? onViewDetails;
 
   const QuickViewModal({
     super.key,
     required this.product,
+    this.onAddToCart,
+    this.onViewDetails,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProductController>();
-
     return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.7,
+      ),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: Elevation.high,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Handle bar
           Center(
@@ -35,126 +43,130 @@ class QuickViewModal extends StatelessWidget {
               height: 4,
               decoration: BoxDecoration(
                 color: AppColors.neutral,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: AppBorders.roundedFull,
               ),
             ),
           ),
-
-          // Product Image
-          Expanded(
-            flex: 4,
-            child: Stack(
-              children: [
-                Image.network(
-                  product.image,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                // Close button
-                Positioned(
-                  top: Spacing.sm,
-                  right: Spacing.sm,
-                  child: IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.close),
-                    style: IconButton.styleFrom(
-                      backgroundColor: AppColors.surface,
-                      foregroundColor: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Product Details
-          Expanded(
-            flex: 6,
+          
+          // Scrollable content
+          Flexible(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(Spacing.md),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    product.title,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  SizedBox(height: Spacing.sm),
-                  Text(
-                    '\$${product.price.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
+                  // Product Image
+                  Hero(
+                    tag: 'product_${product.id}_quickview',
+                    child: Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(product.image),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: Spacing.md),
-                  
-                  // Color options
-                  if (product.colors.isNotEmpty) ...[
-                    Text(
-                      'Colors',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    SizedBox(height: Spacing.sm),
-                    Wrap(
-                      spacing: Spacing.sm,
-                      children: product.colors.map((color) => 
-                        _buildColorOption(color, controller)
-                      ).toList(),
-                    ),
-                    SizedBox(height: Spacing.md),
-                  ],
 
-                  // Size options
-                  if (product.sizes!.isNotEmpty) ...[
-                    Text(
-                      'Sizes',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    SizedBox(height: Spacing.sm),
-                    Wrap(
-                      spacing: Spacing.sm,
-                      children: product.sizes!.map((size) => 
-                        _buildSizeOption(size, controller)
-                      ).toList(),
-                    ),
-                    SizedBox(height: Spacing.md),
-                  ],
+                  Padding(
+                    padding: EdgeInsets.all(Spacing.md),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Title
+                        Text(
+                          product.title,
+                          style: AppTypography.titleLarge,
+                        ),
+                        SizedBox(height: Spacing.sm),
 
-                  // Description
-                  Text(
-                    'Description',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  SizedBox(height: Spacing.sm),
-                  Text(
-                    product.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                        // Price
+                        Text(
+                          '\$${product.price.toStringAsFixed(2)}',
+                          style: AppTypography.headlineMedium.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: Spacing.md),
+
+                        // Description
+                        Text(
+                          product.description,
+                          style: AppTypography.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: Spacing.md),
+
+                        // Color Options
+                        Text(
+                          'Colors',
+                          style: AppTypography.labelLarge,
+                        ),
+                        SizedBox(height: Spacing.xs),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: Get.find<ProductController>()
+                                .colors
+                                .map((color) => _buildColorOption(
+                                    color, Get.find<ProductController>()))
+                                .toList(),
+                          ),
+                        ),
+                        SizedBox(height: Spacing.md),
+
+                        // Size Options
+                        Text(
+                          'Sizes',
+                          style: AppTypography.labelLarge,
+                        ),
+                        SizedBox(height: Spacing.xs),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: Get.find<ProductController>()
+                                .sizes
+                                .map((size) => _buildSizeOption(
+                                    size, Get.find<ProductController>()))
+                                .toList(),
+                          ),
+                        ),
+                        SizedBox(height: Spacing.lg),
+
+                        // Action Buttons
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                text: 'Add to Cart',
+                                onPressed: () {
+                                  onAddToCart?.call();
+                                  Get.back();
+                                },
+                              ),
+                            ),
+                            SizedBox(width: Spacing.md),
+                            Expanded(
+                              child: CustomButton(
+                                text: 'View Details',
+                                onPressed: () {
+                                  onViewDetails?.call();
+                                  Get.back();
+                                },
+                                isOutlined: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-
-          // Add to Cart Button
-          Padding(
-            padding: EdgeInsets.all(Spacing.md),
-            child: AnimatedButton(
-              onPressed: () {
-                controller.addToCart(product);
-                Navigator.pop(context);
-                Get.snackbar(
-                  'Added to Cart',
-                  '${product.title} has been added to your cart',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: AppColors.success,
-                  colorText: AppColors.onSuccess,
-                );
-              },
-              color: AppColors.primary,
-              child: Text('Add to Cart'),
             ),
           ),
         ],

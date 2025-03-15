@@ -26,7 +26,7 @@ class ProductController extends GetxController {
       Product(
         title: "Summer Floral Dress",
         price: 49.99,
-        image: "https://i.pinimg.com/564x/c9/94/3b/c9943b7bc3611c684d4bee67e2481259.jpg",
+        image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Red", "Blue", "Green"],
         sizes: ["XS", "S", "M", "L", "XL"],
@@ -62,7 +62,7 @@ class ProductController extends GetxController {
       Product(
         title: "Evening Gown",
         price: 129.99,
-        image: "https://i.pinimg.com/564x/89/c9/1f/89c91f991e599c81195b04e487e4f4f4.jpg",
+        image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Black", "Navy", "Burgundy"],
         description: "Elegant evening gown with delicate embroidery and flowing silhouette",
@@ -75,7 +75,7 @@ class ProductController extends GetxController {
       Product(
         title: "Casual Maxi Dress",
         price: 59.99,
-        image: "https://i.pinimg.com/564x/42/44/09/4244097d369d9fe2a38b1a9a8a60b786.jpg",
+        image: "https://images.unsplash.com/photo-1495385794356-15371f348c31?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Yellow", "Pink", "White"],
         description: "Flowy maxi dress perfect for summer days",
@@ -88,7 +88,7 @@ class ProductController extends GetxController {
       Product(
         title: "Cocktail Dress",
         price: 89.99,
-        image: "https://i.pinimg.com/564x/d5/0a/c8/d50ac8558111b5187e92f249571e01c4.jpg",
+        image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Red", "Black", "Silver"],
         description: "Stylish cocktail dress for special events",
@@ -101,7 +101,7 @@ class ProductController extends GetxController {
       Product(
         title: "Wrap Dress",
         price: 69.99,
-        image: "https://i.pinimg.com/564x/15/7d/c0/157dc0947d02d54c92b3f0f7916b66c4.jpg",
+        image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Green", "Blue", "Purple"],
         description: "Versatile wrap dress suitable for work and leisure",
@@ -114,7 +114,7 @@ class ProductController extends GetxController {
       Product(
         title: "Bohemian Maxi Dress",
         price: 79.99,
-        image: "https://i.pinimg.com/564x/a8/f5/4f/a8f54f727a5d6391b8618a9dc2b38891.jpg",
+        image: "https://images.unsplash.com/photo-1596783074918-c84cb06531ca?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Orange", "Yellow", "Red"],
         description: "Flowy bohemian style maxi dress perfect for summer",
@@ -127,7 +127,7 @@ class ProductController extends GetxController {
       Product(
         title: "Business Pencil Dress",
         price: 89.99,
-        image: imgP1,
+        image: "https://images.unsplash.com/photo-1550639525-c97d455acf70?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Black", "Navy", "Grey"],
         description: "Professional pencil dress for office wear",
@@ -140,7 +140,7 @@ class ProductController extends GetxController {
       Product(
         title: "Party Sequin Dress",
         price: 119.99,
-        image: imgP1,
+        image: "https://images.unsplash.com/photo-1596993100471-c3905dafa78e?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Gold", "Silver", "Rose Gold"],
         description: "Glamorous sequin dress for special occasions",
@@ -153,7 +153,7 @@ class ProductController extends GetxController {
       Product(
         title: "Casual T-shirt Dress",
         price: 39.99,
-        image: imgP1,
+        image: "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Grey", "Black", "Navy"],
         description: "Comfortable t-shirt dress for everyday wear",
@@ -166,7 +166,7 @@ class ProductController extends GetxController {
       Product(
         title: "Summer Mini Dress",
         price: 49.99,
-        image: imgP1,
+        image: "https://images.unsplash.com/photo-1562137369-1a1a0bc66744?w=500&auto=format",
         category: "Women Clothing",
         colors: ["Pink", "Blue", "White"],
         description: "Light and breezy mini dress for hot days",
@@ -181,7 +181,7 @@ class ProductController extends GetxController {
       Product(
         title: "Casual Denim Jacket",
         price: 79.99,
-        image: "https://i.pinimg.com/564x/8d/c5/0e/8dc50e533b8c8117b7f8f6d8f5349f7b.jpg",
+        image: "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Blue", "Black", "Grey"],
         description: "Classic denim jacket with modern fit and premium construction",
@@ -194,7 +194,7 @@ class ProductController extends GetxController {
       Product(
         title: "Classic White Shirt",
         price: 45.99,
-        image: "https://i.pinimg.com/564x/dd/b7/1b/ddb71b88c2428170c7236f5f9f615cbe.jpg",
+        image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format",
         category: "Men Clothing",
         colors: ["White", "Light Blue", "Pink"],
         description: "Premium cotton dress shirt with wrinkle-resistant finish",
@@ -207,7 +207,7 @@ class ProductController extends GetxController {
       Product(
         title: "Slim Fit Chinos",
         price: 59.99,
-        image: "https://i.pinimg.com/564x/91/f8/1b/91f81b11f5e9c3962b3c9d524f8f60c4.jpg",
+        image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Khaki", "Navy", "Olive"],
         description: "Modern slim fit chinos with stretch comfort",
@@ -220,7 +220,7 @@ class ProductController extends GetxController {
       Product(
         title: "Wool Blend Sweater",
         price: 89.99,
-        image: "https://i.pinimg.com/564x/d7/a3/ae/d7a3ae5c686f6e7c88889c4c6b1d2c88.jpg",
+        image: "https://images.unsplash.com/photo-1638890816611-a8125f4d4f66?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Navy", "Charcoal", "Burgundy"],
         description: "Luxurious wool blend sweater for cold weather comfort",
@@ -233,7 +233,7 @@ class ProductController extends GetxController {
       Product(
         title: "Leather Belt",
         price: 34.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Brown", "Black", "Tan"],
         description: "Genuine leather belt with classic buckle",
@@ -246,7 +246,7 @@ class ProductController extends GetxController {
       Product(
         title: "Casual Polo Shirt",
         price: 39.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Navy", "White", "Grey"],
         description: "Classic polo shirt with moisture-wicking fabric",
@@ -259,7 +259,7 @@ class ProductController extends GetxController {
       Product(
         title: "Formal Suit",
         price: 299.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Black", "Navy", "Charcoal"],
         description: "Premium wool blend suit with modern cut",
@@ -272,7 +272,7 @@ class ProductController extends GetxController {
       Product(
         title: "Sports Shorts",
         price: 29.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Black", "Grey", "Navy"],
         description: "Comfortable athletic shorts with moisture-wicking technology",
@@ -285,7 +285,7 @@ class ProductController extends GetxController {
       Product(
         title: "Winter Jacket",
         price: 129.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1557771884-709f5996687d?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Black", "Navy", "Olive"],
         description: "Insulated winter jacket with water-resistant finish",
@@ -298,7 +298,7 @@ class ProductController extends GetxController {
       Product(
         title: "Dress Shoes",
         price: 89.99,
-        image: imgP2,
+        image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&auto=format",
         category: "Men Clothing",
         colors: ["Black", "Brown", "Tan"],
         description: "Classic leather dress shoes with premium construction",
@@ -313,7 +313,7 @@ class ProductController extends GetxController {
       Product(
         title: "Wireless Mouse",
         price: 29.99,
-        image: "https://i.pinimg.com/564x/2c/e3/c7/2ce3c7c6c52f9c5283fadae0e309ae3e.jpg",
+        image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format",
         category: "Electronics",
         colors: ["Black", "White", "Grey"],
         description: "High-precision wireless mouse with ergonomic design",
@@ -326,7 +326,7 @@ class ProductController extends GetxController {
       Product(
         title: "Mechanical Keyboard",
         price: 89.99,
-        image: "https://i.pinimg.com/564x/3a/e7/d4/3ae7d4adf2c66d7d3d4f8c9c4f2c78b7.jpg",
+        image: "https://images.unsplash.com/photo-1601445638532-3c6f6c3aa1d6?w=500&auto=format",
         category: "Electronics",
         colors: ["Black", "White", "RGB"],
         description: "Professional mechanical gaming keyboard with customizable RGB",
@@ -339,7 +339,7 @@ class ProductController extends GetxController {
       Product(
         title: "Gaming Headset",
         price: 69.99,
-        image: "https://i.pinimg.com/564x/7c/85/c9/7c85c9b58647e2d5b1a9b2ca6c0c5992.jpg",
+        image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=500&auto=format",
         category: "Electronics",
         colors: ["Black", "Red", "Blue"],
         description: "Professional gaming headset with 7.1 surround sound",
@@ -352,7 +352,7 @@ class ProductController extends GetxController {
       Product(
         title: "USB-C Hub",
         price: 45.99,
-        image: "https://i.pinimg.com/564x/8b/c9/2a/8bc92a9f3289be1834f4f2c564515b6b.jpg",
+        image: "https://images.unsplash.com/photo-1625723044792-44de16ccb4c9?w=500&auto=format",
         category: "Electronics",
         colors: ["Silver", "Space Grey", "Black"],
         description: "10-in-1 USB-C hub with multiple ports and fast charging",
@@ -365,7 +365,7 @@ class ProductController extends GetxController {
       Product(
         title: "Laptop Stand",
         price: 29.99,
-        image: imgP3,
+        image: "https://images.unsplash.com/photo-1619696168302-07c28d44d3f9?w=500&auto=format",
         category: "Electronics",
         colors: ["Silver", "Black", "Rose Gold"],
         description: "Ergonomic adjustable laptop stand",
@@ -378,7 +378,7 @@ class ProductController extends GetxController {
       Product(
         title: "4K Monitor",
         price: 299.99,
-        image: "https://i.pinimg.com/564x/7a/c5/28/7ac528c68b3b2db1f5f69c64d670c2df.jpg",
+        image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&auto=format",
         category: "Electronics",
         colors: ["Black"],
         description: "Professional 4K monitor with HDR support",
@@ -391,7 +391,7 @@ class ProductController extends GetxController {
       Product(
         title: "Wireless Keyboard",
         price: 79.99,
-        image: imgP3,
+        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format",
         category: "Electronics",
         colors: ["White", "Black", "Grey"],
         description: "Slim wireless keyboard with multi-device support",
@@ -404,7 +404,7 @@ class ProductController extends GetxController {
       Product(
         title: "External SSD",
         price: 129.99,
-        image: imgP3,
+        image: "https://images.unsplash.com/photo-1628557044797-f21a177c37b0?w=500&auto=format",
         category: "Electronics",
         colors: ["Black", "Blue"],
         description: "High-speed portable SSD with encryption",
@@ -417,7 +417,7 @@ class ProductController extends GetxController {
       Product(
         title: "Webcam HD",
         price: 59.99,
-        image: imgP3,
+        image: "https://images.unsplash.com/photo-1596382940920-9e5c3832f778?w=500&auto=format",
         category: "Electronics",
         colors: ["Black"],
         description: "1080p HD webcam with built-in microphone",
@@ -430,7 +430,7 @@ class ProductController extends GetxController {
       Product(
         title: "Gaming Mouse Pad",
         price: 19.99,
-        image: imgP3,
+        image: "https://images.unsplash.com/photo-1616788373791-1d4794500268?w=500&auto=format",
         category: "Electronics",
         colors: ["Black", "RGB"],
         description: "Extended gaming mouse pad with RGB lighting",
@@ -445,7 +445,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Phone Mount",
         price: 19.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1617997455403-41f36e0a6b5f?w=500&auto=format",
         category: "Cars",
         colors: ["Black", "Grey", "Silver"],
         description: "Universal car phone mount with strong suction",
@@ -458,7 +458,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Air Freshener",
         price: 9.99,
-        image: "https://i.pinimg.com/564x/d2/f1/66/d2f166f7edf8596f1c60f2c5ea4ac410.jpg",
+        image: "https://images.unsplash.com/photo-1619159839896-73c58ee5461f?w=500&auto=format",
         category: "Cars",
         colors: ["Ocean", "Lavender", "Pine"],
         description: "Long-lasting car air freshener with natural scents",
@@ -471,7 +471,7 @@ class ProductController extends GetxController {
       Product(
         title: "Tire Pressure Gauge",
         price: 15.99,
-        image: "https://i.pinimg.com/564x/e5/bd/6e/e5bd6e2e8887646f14b16df4f3e7f9d5.jpg",
+        image: "https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=500&auto=format",
         category: "Cars",
         colors: ["Black", "Blue", "Red"],
         description: "Digital tire pressure gauge with LCD display",
@@ -484,7 +484,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Vacuum Cleaner",
         price: 39.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1618339220157-146d5718a8c8?w=500&auto=format",
         category: "Cars",
         colors: ["Black", "Grey", "White"],
         description: "Powerful handheld car vacuum with LED light",
@@ -497,7 +497,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Seat Cover",
         price: 49.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1600661653561-629509216228?w=500&auto=format",
         category: "Cars",
         colors: ["Black", "Grey", "Beige"],
         description: "Universal fit car seat covers with premium comfort",
@@ -510,7 +510,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Dash Cam",
         price: 89.99,
-        image: "https://i.pinimg.com/564x/b5/c6/ca/b5c6caa3f5c2b18573e7c8e5fcf595c2.jpg",
+        image: "https://images.unsplash.com/photo-1617997455403-41f36e0a6b5f?w=500&auto=format",
         category: "Cars",
         colors: ["Black"],
         description: "1080p dash cam with night vision",
@@ -523,7 +523,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Jump Starter",
         price: 79.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=500&auto=format",
         category: "Cars",
         colors: ["Red", "Black"],
         description: "Portable jump starter with built-in flashlight",
@@ -536,7 +536,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Floor Mats",
         price: 49.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1601592940764-ee5d0f74db69?w=500&auto=format",
         category: "Cars",
         colors: ["Black", "Beige", "Grey"],
         description: "All-weather floor mats set of 4",
@@ -549,7 +549,7 @@ class ProductController extends GetxController {
       Product(
         title: "Car Bluetooth Adapter",
         price: 25.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1619223447760-22c7cc6cb601?w=500&auto=format",
         category: "Cars",
         brand: "TechConnect",
         material: "ABS Plastic",
@@ -560,9 +560,9 @@ class ProductController extends GetxController {
         careInstructions: ["Keep clean", "Protect from heat", "Check connections"],
       ),
       Product(
-        title: "Car Trunk Organizer", 
+        title: "Car Trunk Organizer",
         price: 34.99,
-        image: imgP4,
+        image: "https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=500&auto=format",
         category: "Cars",
         brand: "CargoMaster",
         material: "Oxford Fabric",
@@ -575,7 +575,7 @@ class ProductController extends GetxController {
       Product(
         title: "Educational Building Blocks",
         price: 34.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Interactive building blocks for early learning",
@@ -588,7 +588,7 @@ class ProductController extends GetxController {
       Product(
         title: "Building Block Robot Kit",
         price: 49.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1566140967404-b8b3932483f5?w=500&auto=format",
         category: "Kids Clothing",
         brand: "RoboTech",
         material: "ABS Plastic",
@@ -599,7 +599,7 @@ class ProductController extends GetxController {
       Product(
         title: "Art Supply Set",
         price: 29.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Complete art supply set for creative kids",
@@ -612,7 +612,7 @@ class ProductController extends GetxController {
       Product(
         title: "Plush Animal Collection",
         price: 19.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1555009393-f20bdb245c4d?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Set of soft plush animals for kids",
@@ -625,7 +625,7 @@ class ProductController extends GetxController {
       Product(
         title: "Science Experiment Kit",
         price: 39.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Educational science kit with 40+ experiments",
@@ -638,7 +638,7 @@ class ProductController extends GetxController {
       Product(
         title: "Remote Control Car",
         price: 44.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1594787318286-3d835c1d207f?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Red", "Blue", "Green"],
         description: "High-speed remote control car with stunts",
@@ -651,7 +651,7 @@ class ProductController extends GetxController {
       Product(
         title: "Board Game Set",
         price: 29.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1632501641765-e568d28b0015?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Classic board games collection",
@@ -664,7 +664,7 @@ class ProductController extends GetxController {
       Product(
         title: "Musical Keyboard",
         price: 39.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1552422535-c45813c61732?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Black", "White"],
         description: "Educational musical keyboard for beginners",
@@ -677,7 +677,7 @@ class ProductController extends GetxController {
       Product(
         title: "Puzzle Set",
         price: 19.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1618842676088-c4d48a6a7c9d?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Multicolor"],
         description: "Set of 4 educational puzzles",
@@ -690,7 +690,7 @@ class ProductController extends GetxController {
       Product(
         title: "Drawing Tablet",
         price: 24.99,
-        image: imgP5,
+        image: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=500&auto=format",
         category: "Kids Clothing",
         colors: ["Blue", "Pink", "Green"],
         description: "Digital drawing tablet for kids",
@@ -705,7 +705,7 @@ class ProductController extends GetxController {
       Product(
         title: "Basketball",
         price: 19.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&auto=format",
         category: "Sports",
         colors: ["Orange", "Brown"],
         description: "Official size basketball with superior grip",
@@ -718,7 +718,7 @@ class ProductController extends GetxController {
       Product(
         title: "Tennis Racket",
         price: 129.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1617083934555-5f46adc0c5e7?w=500&auto=format",
         category: "Sports",
         colors: ["Blue", "Black", "White"],
         description: "Professional tennis racket with case",
@@ -731,7 +731,7 @@ class ProductController extends GetxController {
       Product(
         title: "Football",
         price: 29.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=500&auto=format",
         category: "Sports",
         colors: ["Brown"],
         description: "Official size football with enhanced grip",
@@ -744,7 +744,7 @@ class ProductController extends GetxController {
       Product(
         title: "Treadmill",
         price: 499.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=500&auto=format",
         category: "Sports",
         colors: ["Black", "Silver"],
         description: "Foldable treadmill with LCD display",
@@ -757,7 +757,7 @@ class ProductController extends GetxController {
       Product(
         title: "Yoga Mat",
         price: 19.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500&auto=format",
         category: "Sports",
         colors: ["Black", "Grey", "Green"],
         description: "Non-slip yoga mat for home workouts",
@@ -770,7 +770,7 @@ class ProductController extends GetxController {
       Product(
         title: "Bicycle",
         price: 299.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=500&auto=format",
         category: "Sports",
         colors: ["Red", "Black", "White"],
         description: "High-quality bicycle for all terrains",
@@ -783,7 +783,7 @@ class ProductController extends GetxController {
       Product(
         title: "Swimming Goggles",
         price: 14.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1599586120429-48281b6f0ece?w=500&auto=format",
         category: "Sports",
         colors: ["Clear"],
         description: "Clear swimming goggles for water activities",
@@ -796,7 +796,7 @@ class ProductController extends GetxController {
       Product(
         title: "Running Shoes",
         price: 89.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format",
         category: "Sports",
         colors: ["Black", "White", "Grey"],
         description: "High-performance running shoes",
@@ -809,7 +809,7 @@ class ProductController extends GetxController {
       Product(
         title: "Gym Bag",
         price: 29.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format",
         category: "Sports",
         colors: ["Black", "Navy", "Grey"],
         description: "Spacious gym bag with compartments",
@@ -822,7 +822,7 @@ class ProductController extends GetxController {
       Product(
         title: "Weight Bench",
         price: 199.99,
-        image: imgP6,
+        image: "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?w=500&auto=format",
         category: "Sports",
         colors: ["Black", "Grey", "Red"],
         description: "Adjustable weight bench for home workouts",
@@ -837,7 +837,7 @@ class ProductController extends GetxController {
       Product(
         title: "Garden Tool Set",
         price: 49.99,
-        image: imgP7,
+        image: "https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?w=500&auto=format",
         category: "Home Garden",
         colors: ["Green", "Black"],
         description: "Complete garden tool set with carrying case",
@@ -969,7 +969,7 @@ class ProductController extends GetxController {
       Product(
         title: "Face Cream",
         price: 29.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=500&auto=format",
         category: "Beauty",
         colors: ["White"],
         description: "Hydrating face cream with natural ingredients",
@@ -982,7 +982,7 @@ class ProductController extends GetxController {
       Product(
         title: "Lipstick Set",
         price: 39.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&auto=format",
         category: "Beauty",
         colors: ["Red", "Pink", "Nude"],
         description: "Set of 5 long-lasting lipsticks",
@@ -995,7 +995,7 @@ class ProductController extends GetxController {
       Product(
         title: "Hair Dryer",
         price: 79.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=500&auto=format",
         category: "Beauty",
         colors: ["Black", "Pink", "White"],
         description: "Professional ionic hair dryer",
@@ -1008,7 +1008,7 @@ class ProductController extends GetxController {
       Product(
         title: "Makeup Brushes",
         price: 49.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format",
         category: "Beauty",
         colors: ["Rose Gold", "Black"],
         description: "12-piece makeup brush set with case",
@@ -1021,7 +1021,7 @@ class ProductController extends GetxController {
       Product(
         title: "Perfume",
         price: 89.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=500&auto=format",
         category: "Beauty",
         colors: ["Gold", "Silver"],
         description: "Luxury perfume with floral notes",
@@ -1034,7 +1034,7 @@ class ProductController extends GetxController {
       Product(
         title: "Face Mask Set",
         price: 24.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=500&auto=format",
         category: "Beauty",
         colors: ["Multi"],
         description: "Set of 10 sheet masks",
@@ -1047,7 +1047,7 @@ class ProductController extends GetxController {
       Product(
         title: "Nail Polish Set",
         price: 34.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=500&auto=format",
         category: "Beauty",
         colors: ["Multi"],
         description: "Set of 12 nail polishes",
@@ -1060,7 +1060,7 @@ class ProductController extends GetxController {
       Product(
         title: "Hair Straightener",
         price: 59.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1590645833693-955cb4e90210?w=500&auto=format",
         category: "Beauty",
         colors: ["Black", "Pink"],
         description: "Ceramic hair straightener with LCD display",
@@ -1073,7 +1073,7 @@ class ProductController extends GetxController {
       Product(
         title: "Eye Shadow Palette",
         price: 44.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1583241800698-e8ab01830a07?w=500&auto=format",
         category: "Beauty",
         colors: ["Multi"],
         description: "18-color eyeshadow palette",
@@ -1086,7 +1086,7 @@ class ProductController extends GetxController {
       Product(
         title: "Beauty Mirror",
         price: 69.99,
-        image: imgP8,
+        image: "https://images.unsplash.com/photo-1629198735660-e39ea93f5c18?w=500&auto=format",
         category: "Beauty",
         colors: ["White", "Rose Gold"],
         description: "LED lighted makeup mirror",
@@ -1101,7 +1101,7 @@ class ProductController extends GetxController {
       Product(
         title: "Sofa Set",
         price: 999.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format",
         category: "Furniture",
         colors: ["Grey", "Beige", "Blue"],
         description: "Modern 3-piece sofa set with premium upholstery",
@@ -1114,7 +1114,7 @@ class ProductController extends GetxController {
       Product(
         title: "Dining Table",
         price: 599.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1617098900591-3f90928e8c54?w=500&auto=format",
         category: "Furniture",
         colors: ["Brown", "White", "Black"],
         description: "6-seater wooden dining table",
@@ -1127,7 +1127,7 @@ class ProductController extends GetxController {
       Product(
         title: "Bed Frame",
         price: 499.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&auto=format",
         category: "Furniture",
         colors: ["Grey", "Brown", "White"],
         description: "Queen size bed frame with headboard",
@@ -1140,7 +1140,7 @@ class ProductController extends GetxController {
       Product(
         title: "Wardrobe",
         price: 399.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=500&auto=format",
         category: "Furniture",
         colors: ["White", "Brown", "Black"],
         description: "3-door wardrobe with mirror",
@@ -1153,7 +1153,7 @@ class ProductController extends GetxController {
       Product(
         title: "Coffee Table",
         price: 199.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=500&auto=format",
         category: "Furniture",
         colors: ["Walnut", "White", "Black"],
         description: "Modern coffee table with storage",
@@ -1166,7 +1166,7 @@ class ProductController extends GetxController {
       Product(
         title: "Bookshelf",
         price: 149.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1594620302200-1d739436b221?w=500&auto=format",
         category: "Furniture",
         colors: ["White", "Brown", "Black"],
         description: "5-tier bookshelf with adjustable shelves",
@@ -1179,7 +1179,7 @@ class ProductController extends GetxController {
       Product(
         title: "TV Stand",
         price: 249.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1601760561441-16420502c7e0?w=500&auto=format",
         category: "Furniture",
         colors: ["Black", "White", "Brown"],
         description: "TV stand with cable management",
@@ -1192,7 +1192,7 @@ class ProductController extends GetxController {
       Product(
         title: "Office Desk",
         price: 299.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=500&auto=format",
         category: "Furniture",
         colors: ["White", "Brown", "Black"],
         description: "Computer desk with drawers",
@@ -1205,7 +1205,7 @@ class ProductController extends GetxController {
       Product(
         title: "Accent Chair",
         price: 199.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&auto=format",
         category: "Furniture",
         colors: ["Grey", "Blue", "Yellow"],
         description: "Modern accent chair with ottoman",
@@ -1218,7 +1218,7 @@ class ProductController extends GetxController {
       Product(
         title: "Side Table",
         price: 89.99,
-        image: imgP9,
+        image: "https://images.unsplash.com/photo-1499933374294-4584851497cc?w=500&auto=format",
         category: "Furniture",
         colors: ["White", "Black", "Natural"],
         description: "Wooden side table with shelf",

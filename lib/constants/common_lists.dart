@@ -8,10 +8,10 @@ const socialIconList = [
   icAppleLogo,
 ];
 const brandList = [
-  imgSlider1,
-  imgSlider2,
-  imgSlider3,
-  imgSlider4,
+  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format", // Shop banner
+  "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&auto=format", // Electronics banner
+  "https://images.unsplash.com/photo-1540221652346-e5dd6b50f3e7?w=1200&auto=format", // Fashion banner
+  "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&auto=format", // Lifestyle banner
 ];
 const secondList = [
   imgSs1,
@@ -67,14 +67,14 @@ const categoryListImages = [
 ];
 
 final List<String> categoryImages = [
-  "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=500&auto=format", // Women Clothing
-  "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=500&auto=format", // Men Clothing
-  "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?w=500&auto=format", // Kids Clothing
-  "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&auto=format", // Electronics
-  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format", // Sports
-  "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&auto=format", // Cars
-  "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500&auto=format", // Beauty
-  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&auto=format", // Furniture
+  "https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=500&auto=format", // Men
+  "https://images.unsplash.com/photo-1525845859779-54d477ff291f?w=500&auto=format", // Women
+  "https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=500&auto=format", // Kids
+  "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=500&auto=format", // Electronics
+  "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=500&auto=format", // Accessories
+  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&auto=format", // Home
+  "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format", // Beauty
+  "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&auto=format", // Sports
 ];
 
 const categoryNames = [
