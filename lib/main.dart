@@ -6,6 +6,7 @@ import 'package:shopwithme/controllers/auth_controller.dart';
 import 'package:shopwithme/controllers/cart_controller.dart';
 import 'package:shopwithme/controllers/home_controller.dart';
 import 'package:shopwithme/common_widgets/error_widgets.dart' as app_errors;
+import 'package:shopwithme/routes/app_routes.dart';
 import 'firebase_options.dart';
 import 'package:shopwithme/design_system/theme.dart';
 
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light,
       home: const Splashscreen(), // Start with splash screen
       defaultTransition: Transition.cupertino,
+      getPages: AppRoutes.routes(),
       // Add global error handling
       builder: (context, widget) {
         // Add error boundary

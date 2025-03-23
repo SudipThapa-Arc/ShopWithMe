@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shopwithme/design_system/colors.dart';
 
 class AppTypography {
-  static const String fontFamily = 'SF Pro Display';
-
-  static const displayLarge = TextStyle(
+  static TextStyle get displayLarge => GoogleFonts.poppins(
     fontSize: 57,
     fontWeight: FontWeight.bold,
     letterSpacing: -0.25,
@@ -12,7 +11,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const displayMedium = TextStyle(
+  static TextStyle get displayMedium => GoogleFonts.poppins(
     fontSize: 45,
     fontWeight: FontWeight.bold,
     letterSpacing: 0,
@@ -20,7 +19,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const headlineLarge = TextStyle(
+  static TextStyle get headlineLarge => GoogleFonts.poppins(
     fontSize: 32,
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
@@ -28,7 +27,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const headlineMedium = TextStyle(
+  static TextStyle get headlineMedium => GoogleFonts.poppins(
     fontSize: 28,
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
@@ -36,7 +35,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const titleLarge = TextStyle(
+  static TextStyle get titleLarge => GoogleFonts.poppins(
     fontSize: 22,
     fontWeight: FontWeight.w600,
     letterSpacing: 0,
@@ -44,7 +43,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const bodyLarge = TextStyle(
+  static TextStyle get bodyLarge => GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.5,
@@ -52,7 +51,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const bodyMedium = TextStyle(
+  static TextStyle get bodyMedium => GoogleFonts.poppins(
     fontSize: 14,
     fontWeight: FontWeight.normal,
     letterSpacing: 0.25,
@@ -60,7 +59,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const labelLarge = TextStyle(
+  static TextStyle get labelLarge => GoogleFonts.poppins(
     fontSize: 14,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.1,
@@ -68,7 +67,7 @@ class AppTypography {
     color: AppColors.textPrimary,
   );
 
-  static const labelSmall = TextStyle(
+  static TextStyle get labelSmall => GoogleFonts.poppins(
     fontSize: 11,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.5,

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopwithme/constants/colors.dart';
 import 'package:shopwithme/constants/strings.dart';
 import 'package:shopwithme/views/auth_screen/login_screen.dart';
@@ -40,10 +41,18 @@ class _SplashscreenState extends State<Splashscreen>
     // Start animation
     _controller.forward();
 
-    // Add debug prints to check auth state
-    Future.delayed(const Duration(seconds: 3), () {
+    // Check auth and onboarding state after animation
+    Future.delayed(const Duration(seconds: 3), () async {
+      final prefs = await SharedPreferences.getInstance();
+      final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
+      
       final currentUser = FirebaseAuth.instance.currentUser;
       print("Current user: ${currentUser?.email}"); // Debug print
+      
+      if (!hasSeenOnboarding) {
+        Get.offAllNamed('/onboarding');
+        return;
+      }
       
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
         print("Auth state changed. User: ${user?.email}"); // Debug print
